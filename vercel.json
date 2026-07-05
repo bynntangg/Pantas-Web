@@ -1,3 +1,13 @@
 {
-  "outputDirectory": "public/build"
+  "outputDirectory": "public",
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
 }
