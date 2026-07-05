@@ -8,4 +8,7 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    build: {
+        outDir: 'public/build'  // Biarkan ini karena Laravel sudah mengatur ke public/build
+    }
 });
