@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>PANTAS - Mitra HOREKA | Zero Waste</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f5f2;
+            color: #1a2a3a;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            background: #f6faf8;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 85px;
+            overflow-x: hidden;
+        }
+
+        .status-bar {
+            padding: 12px 18px 6px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c5a4a;
+            background: #f6faf8;
+        }
+
+        .header {
+            padding: 8px 18px 16px;
+            background: #f6faf8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(45, 155, 110, 0.15);
+            flex-wrap: nowrap;
+        }
+
+        .logo-area {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-area .logo-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 2px solid #2d9b6e;
+            background: linear-gradient(135deg, #2d9b6e, #1a7a55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0d2f23, #2d9b6e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .logo-text p {
+            font-size: 10px;
+            color: #5a8f7a;
+            margin-top: 2px;
+            white-space: nowrap;
+        }
+
+        .ai-btn {
+            background: linear-gradient(145deg, #fff, #e8f5ed);
+            border: 1px solid #c8e6d9;
+            padding: 8px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #2d9b6e;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .ai-btn:hover {
+            background: #e8f5ed;
+            border-color: #2d9b6e;
+        }
+
+        .ai-btn i {
+            font-size: 12px;
+        }
+
+        @media (max-width: 450px) {
+            .logo-area .logo-img { width: 30px; height: 30px; font-size: 14px; }
+            .logo-text h1 { font-size: 18px; }
+            .logo-text p { font-size: 9px; }
+            .ai-btn span { display: none; }
+            .ai-btn { padding: 8px 12px; }
+            .ai-btn i { font-size: 14px; margin: 0; }
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 12px 22px;
+            border-top: 1px solid rgba(45, 155, 110, 0.12);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #8ab0a0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 40px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-item.active {
+            color: #2d9b6e;
+            background: #e8f5ed;
+        }
+
+        .main-content {
+            padding: 16px;
+            animation: fadeSlide 0.25s ease;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 14px;
+            border: 1px solid #e2ede8;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 100px;
+            background: #f8fcfb;
+            border-radius: 20px;
+            padding: 14px 8px;
+            text-align: center;
+            border: 1px solid #e2ede8;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 800;
+            color: #2d9b6e;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #5a8f7a;
+            margin-top: 6px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-weight: 700;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            color: #0d2f23;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .quick-btn {
+            background: white;
+            border: 1px solid #dce8e2;
+            border-radius: 16px;
+            padding: 10px 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-btn i {
+            font-size: 20px;
+            color: #2d9b6e;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .quick-btn span {
+            font-size: 10px;
+            font-weight: 600;
+            color: #5a8f7a;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #1a4d3a;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #dce8e2;
+            border-radius: 16px;
+            font-size: 13px;
+            background: white;
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            border: 2px dashed #dce8e2;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f8fcfb;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: #2d9b6e;
+            background: #f0f8f4;
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-wrapper .upload-icon {
+            font-size: 28px;
+            color: #2d9b6e;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .file-upload-wrapper .upload-text {
+            font-size: 12px;
+            color: #5a8f7a;
+        }
+
+        .file-upload-wrapper .file-name {
+            font-size: 11px;
+            color: #2d9b6e;
+            font-weight: 600;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .file-preview {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #e8f5ed;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #1a4d3a;
+        }
+
+        .file-preview i {
+            color: #2d9b6e;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(95deg, #2d9b6e, #1a7a55);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:active { transform: scale(0.97); }
+        .btn-primary:hover { box-shadow: 0 4px 16px rgba(45, 155, 110, 0.3); }
+
+        .btn-secondary {
+            background: #e8f5ed;
+            color: #2d9b6e;
+            border: 1px solid #c8e6d9;
+        }
+
+        .btn-secondary:hover {
+            background: #d4ebe0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .badge-success {
+            background: #e0f5ee;
+            color: #11734c;
+        }
+
+        .badge-warning {
+            background: #fff0e0;
+            color: #c46e2a;
+        }
+
+        .badge-info {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .badge-danger {
+            background: #fde8e8;
+            color: #c0392b;
+        }
+
+        .alert-warning {
+            background: #fff8e5;
+            border-left: 4px solid #f39c12;
+            padding: 12px;
+            border-radius: 16px;
+            color: #7a5a1b;
+            margin-top: 12px;
+            font-size: 12px;
+        }
+
+        .alert-success {
+            background: #e0f5ee;
+            border-left: 4px solid #2d9b6e;
+            padding: 12px;
+            border-radius: 16px;
+            color: #11734c;
+            margin-top: 12px;
+            font-size: 12px;
+        }
+
+        .alert-info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 12px;
+            border-radius: 16px;
+            color: #1565c0;
+            font-size: 12px;
+        }
+
+        .surplus-item,
+        .waste-item {
+            background: #f8fcfb;
+            padding: 12px;
+            border-radius: 16px;
+            margin-bottom: 8px;
+            border: 1px solid #e2ede8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .surplus-item .item-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid #e2ede8;
+            background: #f0f5f2;
+        }
+
+        /* ===== REVIEW STYLE ===== */
+        .review-item {
+            background: #f8fcfb;
+            padding: 14px;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            border: 1px solid #e2ede8;
+        }
+
+        .review-item .review-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .review-item .review-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2d9b6e, #1a7a55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .review-item .review-user {
+            flex: 1;
+        }
+
+        .review-item .review-user .name {
+            font-weight: 600;
+            font-size: 13px;
+            color: #0d2f23;
+        }
+
+        .review-item .review-user .date {
+            font-size: 10px;
+            color: #8ab0a0;
+        }
+
+        .review-item .review-stars-row {
+            margin: 4px 0 6px;
+        }
+
+        .review-item .review-stars-row i {
+            font-size: 12px;
+        }
+
+        .review-item .review-comment {
+            font-size: 12px;
+            color: #4a6a5a;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .review-item .review-product-images {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .review-item .review-product-img {
+            width: 72px;
+            height: 72px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid #e2ede8;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f0f5f2;
+        }
+
+        .review-item .review-product-img:hover {
+            transform: scale(1.04);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            border-color: #2d9b6e;
+        }
+
+        .review-item .product-tag {
+            display: inline-block;
+            font-size: 9px;
+            background: #e8f5ed;
+            color: #2d9b6e;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 999999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 20px;
+        }
+
+        .lightbox-overlay.active {
+            display: flex;
+        }
+
+        .lightbox-overlay img {
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: 16px;
+            object-fit: contain;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-overlay .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .lightbox-overlay .close-lightbox:hover {
+            transform: scale(1.1);
+            color: #2d9b6e;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 16px;
+            color: #8ab0a0;
+            font-size: 13px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .chart-container {
+            margin: 12px 0;
+            position: relative;
+            height: 180px;
+        }
+
+        .stats-summary {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e2ede8;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .stats-summary-item {
+            text-align: center;
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .stats-summary-item .value {
+            font-size: 16px;
+            font-weight: 800;
+            color: #2d9b6e;
+        }
+
+        .stats-summary-item .label {
+            font-size: 9px;
+            color: #8ab0a0;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 4px;
+            background: #f0f5f2;
+            padding: 4px;
+            border-radius: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 5px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 600;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #5a8f7a;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: #2d9b6e;
+            color: white;
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: #e8f5ed;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, #1a4d3a, #2d9b6e);
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 16px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .greeting {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .rating-compact {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 40px;
+            padding: 5px 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .review-stars {
+            display: inline-flex;
+            gap: 2px;
+        }
+        .review-stars i { font-size: 10px; }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-overlay.hidden-modal {
+            display: none !important;
+        }
+
+        .modal-container {
+            max-width: 400px;
+            width: 90%;
+            background: white;
+            border-radius: 28px;
+            max-height: 85vh;
+            overflow-y: auto;
+            margin: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 20px 20px 12px;
+            border-bottom: 1px solid #e2ede8;
+            position: sticky;
+            top: 0;
+            background: white;
+            border-radius: 28px 28px 0 0;
+            z-index: 10;
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #2d9b6e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-body {
+            padding: 16px 20px;
+        }
+
+        .policy-section {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f0f5f2;
+        }
+
+        .policy-section h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a4d3a;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .spec-list {
+            background: #f8fcfb;
+            border-radius: 16px;
+            padding: 12px;
+            margin: 10px 0;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e2ede8;
+        }
+
+        .spec-icon {
+            width: 28px;
+            height: 28px;
+            background: #e8f5ed;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2d9b6e;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: #f8fcfb;
+            border-radius: 14px;
+            cursor: pointer;
+        }
+
+        .checkbox-item input {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            accent-color: #2d9b6e;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            flex: 1;
+            font-size: 12px;
+            font-weight: 500;
+            color: #1a4d3a;
+            line-height: 1.4;
+            cursor: pointer;
+        }
+
+        .checkbox-item small {
+            display: block;
+            font-size: 10px;
+            color: #8ab0a0;
+        }
+
+        .btn-agree {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(95deg, #2d9b6e, #1a7a55);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: all 0.2s;
+        }
+
+        .btn-agree:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-agree:hover:not(:disabled) {
+            box-shadow: 0 4px 16px rgba(45, 155, 110, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-reset {
+            background: #f0f5f2;
+            color: #5a8f7a;
+            margin-top: 8px;
+        }
+
+        .btn-reset:hover {
+            background: #e2ede8;
+        }
+
+        .toast-message {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a4d3a;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 1000;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .hide-content {
+            display: none !important;
+        }
+
+        .esg-mini {
+            background: #f0f8f4;
+            border-radius: 16px;
+            padding: 12px;
+            margin-top: 10px;
+            border: 1px solid #dce8e2;
+        }
+
+        .esg-mini-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .esg-mini-item {
+            text-align: center;
+            flex: 1;
+            min-width: 70px;
+        }
+
+        .esg-mini-item .value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #2d9b6e;
+        }
+
+        .esg-mini-item .label {
+            font-size: 9px;
+            color: #5a8f7a;
+        }
+
+        .rating-summary {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            flex-wrap: wrap;
+        }
+
+        .rating-big {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0d2f23;
+        }
+
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .status-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-badge.active {
+            background: #e0f5ee;
+            color: #11734c;
+        }
+
+        .status-badge.active .dot {
+            background: #2d9b6e;
+        }
+
+        .status-badge.inactive {
+            background: #fde8e8;
+            color: #c0392b;
+        }
+
+        .status-badge.inactive .dot {
+            background: #c0392b;
+        }
+
+        /* ====== SHOPEE STYLE CART ====== */
+        .cart-item-row {
+            display: flex;
+            gap: 14px;
+            padding: 12px 14px;
+            border-bottom: 1px solid #f1f3f5;
+            align-items: center;
+        }
+
+        .cart-item-row:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-icon {
+            font-size: 34px;
+            width: 50px;
+            text-align: center;
+            flex-shrink: 0;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 4px 0;
+        }
+
+        .cart-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cart-item-resto {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .cart-item-price {
+            font-weight: 700;
+            color: #2d9b6e;
+            font-size: 14px;
+            margin-top: 3px;
+        }
+
+        .cart-item-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        .cart-item-total {
+            font-weight: 700;
+            color: #2d9b6e;
+            font-size: 15px;
+        }
+
+        .cart-item-qty {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f1f3f5;
+            border-radius: 30px;
+            padding: 2px 6px;
+        }
+
+        .qty-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            color: #2d9b6e;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+
+        .qty-btn:hover {
+            background: #2d9b6e;
+            color: white;
+        }
+
+        .qty-value {
+            font-weight: 600;
+            min-width: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #0f172a;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+            padding: 4px;
+        }
+
+        .remove-btn:hover {
+            color: #ef4444;
+            transform: scale(1.1);
+        }
+
+        .checkout-item-row {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f5f7fa;
+            align-items: center;
+        }
+
+        .checkout-item-row:last-child {
+            border-bottom: none;
+        }
+
+        .checkout-item-row .item-icon {
+            font-size: 30px;
+            width: 42px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .checkout-item-row .item-detail {
+            flex: 1;
+        }
+
+        .checkout-item-row .item-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .checkout-item-row .item-qty {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .checkout-item-row .item-price {
+            font-weight: 700;
+            color: #2d9b6e;
+            font-size: 14px;
+        }
+
+        .checkout-total-box {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin: 8px 0 4px;
+        }
+
+        .checkout-total-box .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 14px;
+            color: #0f172a;
+        }
+
+        .checkout-total-box .row.discount {
+            color: #ef4444;
+        }
+
+        .checkout-total-box .total {
+            font-size: 20px;
+            font-weight: 800;
+            color: #2d9b6e;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 10px;
+            margin-top: 4px;
+        }
+
+        .checkout-total-box .total span:last-child {
+            font-size: 22px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="status-bar"><span>9:41</span><span><i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></span></div>
+        <div class="header">
+            <div class="logo-area">
+                <div class="logo-img"><i class="fas fa-leaf"></i></div>
+                <div class="logo-text">
+                    <h1>PANTAS</h1>
+                    <p><i class="fas fa-chart-line"></i> Mitra HOREKA • Zero Waste</p>
+                </div>
+            </div>
+            <button class="ai-btn" onclick="showToast('🤖 AI PANTAS siap membantu bisnis Anda!')">
+                <i class="fas fa-microchip"></i> <span>AI Bisnis</span>
+            </button>
+        </div>
+
+        <div class="main-content" id="mainContent">
+            <!-- DASHBOARD -->
+            <div id="dashboardTab">
+                <div class="welcome-banner" id="ratingBannerBtn">
+                    <div class="greeting">Selamat datang, <span id="ownerName">Warung MbaK Harum</span>! 👋</div>
+                    <p style="font-size: 12px; opacity: 0.9;">Terus berkontribusi mengurangi food waste 🌱</p>
+                    <div class="rating-compact">
+                        <i class="fas fa-star"></i>
+                        <span class="score" id="ratingScore">4.8</span>
+                        <span class="count" id="ratingCount">(12 ulasan)</span>
+                        <i class="fas fa-chevron-right" style="font-size: 10px; opacity: 0.7;"></i>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <div class="quick-btn" onclick="showTab('upload')"><i class="fas fa-plus-circle"></i><span>Upload Surplus</span></div>
+                    <div class="quick-btn" onclick="showTab('waste')"><i class="fas fa-trash-alt"></i><span>Catat Limbah</span></div>
+                    <div class="quick-btn" onclick="showTab('prediction')"><i class="fas fa-chart-line"></i><span>Prediksi</span></div>
+                    <div class="quick-btn" onclick="downloadESG()"><i class="fas fa-file-alt"></i><span>Laporan ESG</span></div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-value" id="revenue">Rp0</div>
+                        <div class="stat-label"><i class="fas fa-money-bill-wave"></i> Pendapatan</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="wasteAmount">0kg</div>
+                        <div class="stat-label"><i class="fas fa-recycle"></i> Limbah Terselamatkan</div>
+                    </div>
+                </div>
+
+                <!-- RATING SECTION -->
+                <div class="card">
+                    <div class="section-title"><span><i class="fas fa-star" style="color:#f6b83e;"></i> Rating & Ulasan</span>
+                        <span class="badge badge-info" id="totalReviewsCount">0</span>
+                    </div>
+                    <div class="rating-summary">
+                        <div class="rating-big" id="ratingBig">4.8</div>
+                        <div class="review-stars" id="ratingStarsBig"></div>
+                        <span style="font-size:12px; color:#5a8f7a;" id="ratingCountBig">(12 ulasan)</span>
+                    </div>
+                    <div id="recentReviewsList"></div>
+                    <button class="btn-primary btn-secondary" onclick="showTab('reviews')" style="margin-top:8px; padding:10px;">
+                        <i class="fas fa-chevron-right"></i> Lihat Semua Ulasan
+                    </button>
+                </div>
+
+                <!-- ESG SECTION -->
+                <div class="card">
+                    <div class="section-title"><span><i class="fas fa-leaf" style="color:#2d9b6e;"></i> Dampak Lingkungan</span>
+                        <span class="badge badge-success">ESG</span>
+                    </div>
+                    <div class="esg-mini">
+                        <div class="esg-mini-row">
+                            <div class="esg-mini-item">
+                                <div class="value" id="co2Reduction">0kg</div>
+                                <div class="label">CO₂eq Tereduksi</div>
+                            </div>
+                            <div class="esg-mini-item">
+                                <div class="value" id="totalWasteSaved">0kg</div>
+                                <div class="label">Limbah Terselamatkan</div>
+                            </div>
+                            <div class="esg-mini-item">
+                                <div class="value" id="treesEquivalent">0</div>
+                                <div class="label">Setara Pohon</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-primary btn-secondary" onclick="downloadESG()" style="margin-top:10px; padding:10px;">
+                        <i class="fas fa-file-pdf"></i> Download Laporan ESG
+                    </button>
+                </div>
+
+                <!-- CHARTS -->
+                <div class="card">
+                    <div class="section-title"><span><i class="fas fa-chart-line"></i> Penjualan Surplus</span>
+                        <div class="filter-buttons" id="salesFilter">
+                            <button class="filter-btn active" data-period="daily">Harian</button>
+                            <button class="filter-btn" data-period="weekly">Mingguan</button>
+                            <button class="filter-btn" data-period="monthly">Bulanan</button>
+                        </div>
+                    </div>
+                    <div class="chart-container"><canvas id="surplusSalesChart"></canvas></div>
+                    <div class="stats-summary">
+                        <div class="stats-summary-item">
+                            <div class="value" id="totalSold">0</div>
+                            <div class="label">Total Terjual</div>
+                        </div>
+                        <div class="stats-summary-item">
+                            <div class="value" id="avgSales">0</div>
+                            <div class="label">Rata-rata</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="section-title"><span><i class="fas fa-money-bill-wave"></i> Pendapatan</span>
+                        <div class="filter-buttons" id="revenueFilter">
+                            <button class="filter-btn active" data-period="daily">Harian</button>
+                            <button class="filter-btn" data-period="weekly">Mingguan</button>
+                            <button class="filter-btn" data-period="monthly">Bulanan</button>
+                        </div>
+                    </div>
+                    <div class="chart-container"><canvas id="revenueChart"></canvas></div>
+                    <div class="stats-summary">
+                        <div class="stats-summary-item">
+                            <div class="value" id="totalRevenue">Rp0</div>
+                            <div class="label">Total</div>
+                        </div>
+                        <div class="stats-summary-item">
+                            <div class="value" id="avgRevenue">Rp0</div>
+                            <div class="label">Rata-rata</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="section-title"><span><i class="fas fa-leaf"></i> Reduksi CO₂eq</span>
+                        <div class="filter-buttons" id="carbonFilter">
+                            <button class="filter-btn active" data-period="daily">Harian</button>
+                            <button class="filter-btn" data-period="weekly">Mingguan</button>
+                            <button class="filter-btn" data-period="monthly">Bulanan</button>
+                        </div>
+                    </div>
+                    <div class="chart-container"><canvas id="carbonChart"></canvas></div>
+                    <div class="stats-summary">
+                        <div class="stats-summary-item">
+                            <div class="value" id="totalCarbon">0 kg</div>
+                            <div class="label">Total CO₂eq</div>
+                        </div>
+                        <div class="stats-summary-item">
+                            <div class="value" id="treesPlanted">0</div>
+                            <div class="label">Setara Pohon</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="section-title"><span><i class="fas fa-utensils"></i> Menu Surplus Aktif</span>
+                        <span class="badge badge-success" id="surplusCount">0 item</span>
+                    </div>
+                    <div id="activeSurplusList"></div>
+                </div>
+
+                <div class="card">
+                    <div class="section-title"><span><i class="fas fa-brain"></i> Rekomendasi AI</span></div>
+                    <div class="alert-warning" id="aiRecommendMsg"><i class="fas fa-spinner fa-pulse"></i> Memuat prediksi pintar...</div>
+                </div>
+            </div>
+
+            <!-- UPLOAD -->
+            <div id="uploadTab" class="hidden">
+                <div class="card">
+                    <h4 style="margin-bottom: 12px;"><i class="fas fa-cloud-upload-alt"></i> Upload Surplus Makanan</h4>
+                    <div class="form-group"><label class="form-label">Nama Menu *</label><input class="form-input" id="menuName" placeholder="Contoh: Nasi Goreng Special"></div>
+                    <div class="form-group"><label class="form-label">Harga Normal (Rp)</label><input class="form-input" id="normalPrice" placeholder="35000" type="number"></div>
+                    <div class="form-group"><label class="form-label">Harga Surplus (Rp) *</label><input class="form-input" id="surplusPrice" placeholder="21000" type="number"></div>
+                    <div class="form-group"><label class="form-label">Jumlah Porsi *</label><input class="form-input" id="portion" placeholder="5" type="number"></div>
+                    <div class="form-group"><label class="form-label">Waktu Tersedia</label><select class="form-select" id="availableTime">
+                            <option>09:00 - 14:00</option>
+                            <option>14:00 - 18:00</option>
+                            <option>18:00 - 21:00</option>
+                        </select></div>
+                    <div class="form-group">
+                        <label class="form-label">Foto Menu</label>
+                        <div class="file-upload-wrapper" id="surplusUploadWrapper">
+                            <input type="file" id="surplusImageInput" accept="image/*" onchange="handleSurplusImage(event)">
+                            <i class="fas fa-camera upload-icon"></i>
+                            <div class="upload-text">Klik atau seret untuk upload foto</div>
+                            <div class="file-name" id="surplusFileName">📷 image.jpg</div>
+                        </div>
+                        <div id="surplusPreview" style="margin-top:8px; display:none;">
+                            <div class="file-preview">
+                                <i class="fas fa-image"></i>
+                                <span id="surplusPreviewName">image.jpg</span>
+                                <span style="margin-left:auto; font-size:10px; color:#2d9b6e; cursor:pointer;" onclick="removeSurplusImage()">✕</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="uploadSurplus()"><i class="fas fa-check-circle"></i> Upload Sekarang</button>
+                </div>
+            </div>
+
+            <!-- WASTE -->
+            <div id="wasteTab" class="hidden">
+                <div class="card">
+                    <h4 style="margin-bottom: 12px;"><i class="fas fa-trash-alt"></i> Catat Limbah Organik</h4>
+                    <div class="form-group"><label class="form-label">Jenis Limbah</label><select class="form-select" id="wasteType">
+                            <option>Sisa Makanan</option>
+                            <option>Sayuran Busuk</option>
+                            <option>Kulit Buah</option>
+                            <option>Amplas/Sisa Olahan</option>
+                        </select></div>
+                    <div class="form-group"><label class="form-label">Berat (kg)</label><input class="form-input" id="wasteWeight" placeholder="12" type="number"></div>
+                    <div class="form-group"><label class="form-label">Catatan (opsional)</label><input class="form-input" id="wasteNote" placeholder="Misal: sisa buffet"></div>
+                    <div class="form-group">
+                        <label class="form-label">Foto Limbah</label>
+                        <div class="file-upload-wrapper" id="wasteUploadWrapper">
+                            <input type="file" id="wasteImageInput" accept="image/*" onchange="handleWasteImage(event)">
+                            <i class="fas fa-camera upload-icon"></i>
+                            <div class="upload-text">Klik atau seret untuk upload foto</div>
+                            <div class="file-name" id="wasteFileName">📷 image.jpg</div>
+                        </div>
+                        <div id="wastePreview" style="margin-top:8px; display:none;">
+                            <div class="file-preview">
+                                <i class="fas fa-image"></i>
+                                <span id="wastePreviewName">image.jpg</span>
+                                <span style="margin-left:auto; font-size:10px; color:#2d9b6e; cursor:pointer;" onclick="removeWasteImage()">✕</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="recordWaste()"><i class="fas fa-leaf"></i> Kirim ke Pengolah + Insentif</button>
+                </div>
+                <div class="card">
+                    <div class="section-title"><span><i class="fas fa-history"></i> Riwayat Limbah</span></div>
+                    <div id="wasteHistoryList"></div>
+                </div>
+            </div>
+
+            <!-- PREDICTION -->
+            <div id="predictionTab" class="hidden">
+                <div class="card">
+                    <h4 style="margin-bottom: 12px;"><i class="fas fa-chart-line"></i> Prediksi Limbah (ML)</h4>
+                    <div id="predictionChart"></div>
+                    <div class="alert-warning" id="predictionAlert"></div>
+                </div>
+                <div class="card">
+                    <div class="section-title"><span><i class="fas fa-lightbulb"></i> Rekomendasi AI</span></div>
+                    <div id="recommendationList"></div>
+                </div>
+            </div>
+
+            <!-- REVIEWS -->
+            <div id="reviewsTab" class="hidden">
+                <div class="card">
+                    <div class="section-title"><span><i class="fas fa-star" style="color:#f6b83e;"></i> Semua Ulasan</span>
+                        <span id="totalReviewsFull" class="badge badge-info">0</span>
+                    </div>
+                    <div id="allReviewsList"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <button class="nav-item active" data-tab="dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></button>
+            <button class="nav-item" data-tab="upload"><i class="fas fa-upload"></i><span>Upload</span></button>
+            <button class="nav-item" data-tab="waste"><i class="fas fa-dumpster"></i><span>Limbah</span></button>
+            <button class="nav-item" data-tab="prediction"><i class="fas fa-robot"></i><span>Prediksi</span></button>
+            <button class="nav-item" data-tab="reviews"><i class="fas fa-star"></i><span>Rating</span></button>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
+        <span class="close-lightbox">&times;</span>
+        <img id="lightboxImage" src="" alt="Foto Produk">
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="policyModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2><i class="fas fa-handshake"></i> Perjanjian Mitra HOREKA</h2>
+                <p style="font-size: 11px; color: #8ab0a0;">✅ Baca dan setujui kebijakan berikut</p>
+            </div>
+            <div class="modal-body">
+                <div class="policy-section">
+                    <h3><i class="fas fa-utensils"></i> Standar Makanan</h3>
+                    <div class="spec-list">
+                        <div class="spec-item"><div class="spec-icon"><i class="fas fa-temperature-high"></i></div><div><strong>Suhu</strong><br><small>Makanan panas 60°C, dingin 5°C</small></div></div>
+                        <div class="spec-item"><div class="spec-icon"><i class="fas fa-clock"></i></div><div><strong>Batas Waktu</strong><br><small>Maksimal 4 jam setelah masak</small></div></div>
+                        <div class="spec-item"><div class="spec-icon"><i class="fas fa-box"></i></div><div><strong>Kemasan</strong><br><small>Food-grade, tertutup rapat</small></div></div>
+                    </div>
+                </div>
+                <div class="policy-section">
+                    <h3><i class="fas fa-leaf"></i> Komitmen Zero Waste</h3>
+                    <p style="font-size: 12px;">Target pengurangan limbah: Minimal 20% dalam 6 bulan pertama.</p>
+                </div>
+                <div class="policy-section">
+                    <h3><i class="fas fa-check-circle"></i> Persetujuan</h3>
+                    <div class="checkbox-item"><input type="checkbox" id="check1"><label>Memenuhi standar spesifikasi makanan</label><small>Wajib mematuhi standar HACCP dasar</small></div>
+                    <div class="checkbox-item"><input type="checkbox" id="check2"><label>Berkomitmen mengurangi limbah makanan</label><small>Zero waste adalah prioritas utama</small></div>
+                    <div class="checkbox-item"><input type="checkbox" id="check3"><label>Menyetujui pengumpulan data untuk analitik AI</label><small>Data dianonimkan untuk peningkatan layanan</small></div>
+                    <div class="checkbox-item"><input type="checkbox" id="check4"><label>Memahami sanksi pelanggaran</label><small>Peringatan → Penangguhan 7 hari → Hapus akun</small></div>
+                    <div class="checkbox-item"><input type="checkbox" id="check5"><label>Bersedia mengikuti pelatihan keamanan pangan</label><small>Pelatihan online gratis setiap 3 bulan</small></div>
+                </div>
+                <button class="btn-agree" id="agreeBtn" disabled><i class="fas fa-check-circle"></i> Setuju & Mulai</button>
+                <button class="btn-agree btn-reset" id="resetBtn"><i class="fas fa-trash-alt"></i> Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ DATA ============
+        let wasteRecords = [];
+        let surplusList = [];
+        let revenueTotal = 0;
+        let reviews = [];
+        let surplusImageData = null;
+        let wasteImageData = null;
+
+        let defaultReviews = [
+            { 
+                id: 1, 
+                rating: 5, 
+                name: "Budi Santoso", 
+                comment: "Makanannya enak banget! Porsi besar dan harga terjangkau. Recommended!", 
+                date: "2 hari lalu",
+                product: "Nasi Goreng Special",
+                productImage: "https://picsum.photos/seed/nasgor/200/200"
+            },
+            { 
+                id: 2, 
+                rating: 5, 
+                name: "Siti Aminah", 
+                comment: "Pelayanannya ramah, makanan fresh dan bersih. Langganan terus!", 
+                date: "5 hari lalu",
+                product: "Ayam Geprek",
+                productImage: "https://picsum.photos/seed/ayamgeprek/200/200"
+            },
+            { 
+                id: 3, 
+                rating: 4, 
+                name: "Rina Wijaya", 
+                comment: "Rasanya enak, cuma agak lama pas delivery. Tapi overall puas!", 
+                date: "1 minggu lalu",
+                product: "Mie Ayam",
+                productImage: "https://picsum.photos/seed/mieayam/200/200"
+            },
+            { 
+                id: 4, 
+                rating: 5, 
+                name: "Andi Prasetyo", 
+                comment: "Surplus food-nya worth it banget! Kualitas tetap oke.", 
+                date: "1 minggu lalu",
+                product: "Bakso Malang",
+                productImage: "https://picsum.photos/seed/bakso/200/200"
+            },
+            { 
+                id: 5, 
+                rating: 4, 
+                name: "Dewi Lestari", 
+                comment: "Nasi gorengnya mantap, next order lagi pasti!", 
+                date: "2 minggu lalu",
+                product: "Nasi Goreng",
+                productImage: null
+            }
+        ];
+
+        let salesChart, revenueChart, carbonChart;
+
+        const chartData = {
+            daily: { labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'], sales: [14, 22, 30, 28, 36, 32, 24], revenue: [280000, 440000, 600000, 560000, 720000, 640000, 480000], carbon: [11.9, 18.7, 25.5, 23.8, 30.6, 27.2, 20.4] },
+            weekly: { labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'], sales: [88, 112, 105, 128], revenue: [1870000, 2380000, 2230000, 2720000], carbon: [74.8, 95.2, 89.25, 108.8] },
+            monthly: { labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'], sales: [340, 380, 410, 445, 485, 520, 550, 585, 620, 655, 690, 730], revenue: [7225000, 8075000, 8712500, 9456250, 10306250, 11050000, 11687500, 12431250, 13175000, 13918750, 14662500, 15512500], carbon: [289, 323, 348.5, 378.25, 412.25, 442, 467.5, 497.25, 527, 556.75, 586.5, 620.5] }
+        };
+
+        // ============ FUNGSI ============
+        function renderStars(rating, size = '10px') {
+            let fullStars = Math.floor(rating);
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= fullStars) stars += '<i class="fas fa-star" style="color:#f6b83e; font-size:' + size + ';"></i>';
+                else if (i === fullStars + 1 && rating % 1 >= 0.5) stars += '<i class="fas fa-star-half-alt" style="color:#f6b83e; font-size:' + size + ';"></i>';
+                else stars += '<i class="far fa-star" style="color:#ddd; font-size:' + size + ';"></i>';
+            }
+            return stars;
+        }
+
+        function calculateRatingStats() {
+            if (!reviews || reviews.length === 0) return { avg: 0, total: 0 };
+            let sum = reviews.reduce((acc, r) => acc + r.rating, 0);
+            return { avg: sum / reviews.length, total: reviews.length };
+        }
+
+        function getInitials(name) {
+            return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+        }
+
+        // ============ LIGHTBOX ============
+        function openLightbox(imageUrl) {
+            if (!imageUrl) return;
+            const overlay = document.getElementById('lightboxOverlay');
+            const img = document.getElementById('lightboxImage');
+            img.src = imageUrl;
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const overlay = document.getElementById('lightboxOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        // ============ RENDER REVIEWS ============
+        function renderReviewItem(review) {
+            const productImageHtml = review.productImage ? 
+                `<div class="review-product-images">
+                    <img src="${review.productImage}" class="review-product-img" alt="Foto ${review.product}" onclick="event.stopPropagation(); openLightbox('${review.productImage}')">
+                </div>` : '';
+
+            const productTagHtml = review.product ? 
+                `<span class="product-tag"><i class="fas fa-utensils"></i> ${review.product}</span>` : '';
+
+            return `
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="review-avatar">${getInitials(review.name)}</div>
+                        <div class="review-user">
+                            <div class="name">${review.name}</div>
+                            <div class="date">${review.date}</div>
+                        </div>
+                    </div>
+                    <div class="review-stars-row">${renderStars(review.rating, '12px')}</div>
+                    <div class="review-comment">"${review.comment}"</div>
+                    ${productTagHtml}
+                    ${productImageHtml}
+                </div>
+            `;
+        }
+
+        function renderRecentReviews() {
+            let container = document.getElementById('recentReviewsList');
+            if (!container) return;
+            let recent = reviews.slice(0, 2);
+            if (recent.length === 0) {
+                container.innerHTML = '<div class="empty-state" style="padding:12px;">Belum ada ulasan</div>';
+                return;
+            }
+            container.innerHTML = recent.map(r => renderReviewItem(r)).join('');
+        }
+
+        function renderAllReviews() {
+            let container = document.getElementById('allReviewsList');
+            if (!container) return;
+            if (!reviews || reviews.length === 0) {
+                container.innerHTML = '<div class="empty-state">Belum ada ulasan pelanggan</div>';
+                return;
+            }
+            container.innerHTML = reviews.map(r => renderReviewItem(r)).join('');
+        }
+
+        function updateRatingUI() {
+            let stats = calculateRatingStats();
+            document.getElementById('ratingScore').innerText = stats.avg.toFixed(1);
+            document.getElementById('ratingCount').innerText = `(${stats.total} ulasan)`;
+            document.getElementById('ratingBig').innerText = stats.avg.toFixed(1);
+            document.getElementById('ratingCountBig').innerText = `(${stats.total} ulasan)`;
+            document.getElementById('ratingStarsBig').innerHTML = renderStars(stats.avg, '14px');
+            document.getElementById('totalReviewsCount').innerText = stats.total;
+            document.getElementById('totalReviewsFull').innerText = stats.total;
+        }
+
+        // ============ IMAGE HANDLERS ============
+        function handleSurplusImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            surplusImageData = file;
+            document.getElementById('surplusFileName').textContent = '📷 ' + file.name;
+            document.getElementById('surplusFileName').style.display = 'block';
+            document.getElementById('surplusPreviewName').textContent = file.name;
+            document.getElementById('surplusPreview').style.display = 'block';
+            document.querySelector('#surplusUploadWrapper .upload-text').style.display = 'none';
+            showToast('📷 Foto menu berhasil diupload');
+        }
+
+        function removeSurplusImage() {
+            surplusImageData = null;
+            document.getElementById('surplusImageInput').value = '';
+            document.getElementById('surplusFileName').style.display = 'none';
+            document.getElementById('surplusPreview').style.display = 'none';
+            document.querySelector('#surplusUploadWrapper .upload-text').style.display = 'block';
+        }
+
+        function handleWasteImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            wasteImageData = file;
+            document.getElementById('wasteFileName').textContent = '📷 ' + file.name;
+            document.getElementById('wasteFileName').style.display = 'block';
+            document.getElementById('wastePreviewName').textContent = file.name;
+            document.getElementById('wastePreview').style.display = 'block';
+            document.querySelector('#wasteUploadWrapper .upload-text').style.display = 'none';
+            showToast('📷 Foto limbah berhasil diupload');
+        }
+
+        function removeWasteImage() {
+            wasteImageData = null;
+            document.getElementById('wasteImageInput').value = '';
+            document.getElementById('wasteFileName').style.display = 'none';
+            document.getElementById('wastePreview').style.display = 'none';
+            document.querySelector('#wasteUploadWrapper .upload-text').style.display = 'block';
+        }
+
+        // ============ UPDATE FUNCTIONS ============
+        function updateChartStats(period, type) {
+            let data = chartData[period];
+            if (type === 'sales') {
+                let total = data.sales.reduce((a, b) => a + b, 0);
+                document.getElementById('totalSold').innerText = total;
+                document.getElementById('avgSales').innerText = Math.round(total / data.sales.length);
+            } else if (type === 'revenue') {
+                let total = data.revenue.reduce((a, b) => a + b, 0);
+                document.getElementById('totalRevenue').innerText = 'Rp' + total.toLocaleString();
+                document.getElementById('avgRevenue').innerText = 'Rp' + Math.round(total / data.revenue.length).toLocaleString();
+            } else if (type === 'carbon') {
+                let total = data.carbon.reduce((a, b) => a + b, 0);
+                document.getElementById('totalCarbon').innerText = total.toFixed(1) + ' kg';
+                document.getElementById('treesPlanted').innerText = Math.floor(total / 50);
+            }
+        }
+
+        function updateSalesChart(period) { 
+            let data = chartData[period]; 
+            if (salesChart) {
+                salesChart.data.labels = data.labels; 
+                salesChart.data.datasets[0].data = data.sales; 
+                salesChart.update(); 
+            }
+            updateChartStats(period, 'sales'); 
+        }
+        
+        function updateRevenueChart(period) { 
+            let data = chartData[period]; 
+            if (revenueChart) {
+                revenueChart.data.labels = data.labels; 
+                revenueChart.data.datasets[0].data = data.revenue; 
+                revenueChart.update(); 
+            }
+            updateChartStats(period, 'revenue'); 
+        }
+        
+        function updateCarbonChart(period) { 
+            let data = chartData[period]; 
+            if (carbonChart) {
+                carbonChart.data.labels = data.labels; 
+                carbonChart.data.datasets[0].data = data.carbon; 
+                carbonChart.update(); 
+            }
+            updateChartStats(period, 'carbon'); 
+        }
+
+        function initCharts() {
+            let salesCtx = document.getElementById('surplusSalesChart');
+            let revenueCtx = document.getElementById('revenueChart');
+            let carbonCtx = document.getElementById('carbonChart');
+            
+            if (salesCtx) {
+                salesChart = new Chart(salesCtx.getContext('2d'), { 
+                    type: 'bar', 
+                    data: { labels: chartData.daily.labels, datasets: [{ label: 'Porsi Terjual', data: chartData.daily.sales, backgroundColor: 'rgba(45,155,110,0.75)', borderRadius: 10 }] }, 
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } } 
+                });
+            }
+            
+            if (revenueCtx) {
+                revenueChart = new Chart(revenueCtx.getContext('2d'), { 
+                    type: 'line', 
+                    data: { labels: chartData.daily.labels, datasets: [{ label: 'Pendapatan (Rp)', data: chartData.daily.revenue, borderColor: '#2d9b6e', backgroundColor: 'rgba(45,155,110,0.08)', borderWidth: 2, fill: true, tension: 0.3 }] }, 
+                    options: { responsive: true, maintainAspectRatio: true, scales: { y: { beginAtZero: true, ticks: { callback: (v) => `Rp${(v / 1000).toFixed(0)}k` } } } } 
+                });
+            }
+            
+            if (carbonCtx) {
+                carbonChart = new Chart(carbonCtx.getContext('2d'), { 
+                    type: 'line', 
+                    data: { labels: chartData.daily.labels, datasets: [{ label: 'CO₂eq (kg)', data: chartData.daily.carbon, borderColor: '#1a7a55', backgroundColor: 'rgba(26,122,85,0.08)', borderWidth: 2, fill: true, tension: 0.3 }] }, 
+                    options: { responsive: true, maintainAspectRatio: true, scales: { y: { beginAtZero: true } } } 
+                });
+            }
+            
+            updateChartStats('daily', 'sales');
+            updateChartStats('daily', 'revenue');
+            updateChartStats('daily', 'carbon');
+        }
+
+        function setupFilters() {
+            document.querySelectorAll('#salesFilter .filter-btn').forEach(btn => { 
+                btn.addEventListener('click', () => { 
+                    document.querySelectorAll('#salesFilter .filter-btn').forEach(b => b.classList.remove('active')); 
+                    btn.classList.add('active'); 
+                    updateSalesChart(btn.dataset.period); 
+                }); 
+            });
+            document.querySelectorAll('#revenueFilter .filter-btn').forEach(btn => { 
+                btn.addEventListener('click', () => { 
+                    document.querySelectorAll('#revenueFilter .filter-btn').forEach(b => b.classList.remove('active')); 
+                    btn.classList.add('active'); 
+                    updateRevenueChart(btn.dataset.period); 
+                }); 
+            });
+            document.querySelectorAll('#carbonFilter .filter-btn').forEach(btn => { 
+                btn.addEventListener('click', () => { 
+                    document.querySelectorAll('#carbonFilter .filter-btn').forEach(b => b.classList.remove('active')); 
+                    btn.classList.add('active'); 
+                    updateCarbonChart(btn.dataset.period); 
+                }); 
+            });
+        }
+
+        function updateDashboard() {
+            let totalWaste = wasteRecords.reduce((sum, w) => sum + (w.weight || 0), 0);
+            document.getElementById('wasteAmount').innerText = totalWaste + ' kg';
+            document.getElementById('totalWasteSaved').innerText = totalWaste + ' kg';
+            
+            let estimatedRevenue = surplusList.reduce((sum, s) => sum + (s.price * (s.sold || Math.floor(Math.random() * 4) + 2)), 0);
+            let finalRevenue = estimatedRevenue + revenueTotal;
+            document.getElementById('revenue').innerText = 'Rp' + finalRevenue.toLocaleString();
+            
+            let co2Reduction = (totalWaste * 0.85).toFixed(1);
+            document.getElementById('co2Reduction').innerText = co2Reduction + 'kg';
+            document.getElementById('treesEquivalent').innerText = Math.floor(totalWaste * 0.05);
+            
+            const activeContainer = document.getElementById('activeSurplusList');
+            const surplusCountEl = document.getElementById('surplusCount');
+            if (!surplusList || surplusList.length === 0) { 
+                activeContainer.innerHTML = '<div class="empty-state">Belum ada surplus diupload</div>'; 
+                surplusCountEl.innerText = '0 item';
+            } else { 
+                surplusCountEl.innerText = surplusList.length + ' item'; 
+                activeContainer.innerHTML = surplusList.map(s => `
+                    <div class="surplus-item">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            ${s.image ? `<img src="${s.image}" class="item-image" alt="${s.name}">` : '<div style="width:40px; height:40px; border-radius:10px; background:#e8f5ed; display:flex; align-items:center; justify-content:center; color:#2d9b6e;"><i class="fas fa-utensils"></i></div>'}
+                            <div><strong style="font-size:13px;">${s.name}</strong><br><span style="font-size:11px;">Rp${s.price.toLocaleString()} / porsi</span></div>
+                        </div>
+                        <span class="status-badge active"><span class="dot"></span> Aktif</span>
+                    </div>
+                `).join(''); 
+            }
+            
+            document.getElementById('aiRecommendMsg').innerHTML = '<i class="fas fa-chart-line"></i> Rekomendasi AI: Berdasarkan tren realtime, tingkatkan promo surplus di Rabu & Jumat untuk maksimalkan pendapatan.';
+            
+            updateRatingUI();
+            renderRecentReviews();
+        }
+
+        // ============ ACTIONS ============
+        function uploadSurplus() {
+            let name = document.getElementById('menuName').value.trim();
+            let surplusPrice = parseInt(document.getElementById('surplusPrice').value);
+            let portion = parseInt(document.getElementById('portion').value);
+            if (!name || isNaN(surplusPrice) || isNaN(portion) || surplusPrice <= 0) { 
+                alert('Isi semua field dengan benar!'); 
+                return; 
+            }
+            
+            let imageUrl = null;
+            if (surplusImageData) {
+                imageUrl = URL.createObjectURL(surplusImageData);
+            }
+            
+            surplusList.push({ 
+                id: Date.now(), 
+                name: name, 
+                price: surplusPrice, 
+                portion: portion, 
+                sold: 0, 
+                date: new Date().toLocaleDateString('id-ID'), 
+                time: document.getElementById('availableTime').value,
+                image: imageUrl
+            });
+            localStorage.setItem('pantasSurplus', JSON.stringify(surplusList));
+            document.getElementById('menuName').value = ''; 
+            document.getElementById('surplusPrice').value = ''; 
+            document.getElementById('portion').value = '';
+            removeSurplusImage();
+            updateDashboard(); 
+            showToast('✅ Surplus makanan berhasil diupload!');
+        }
+
+        function recordWaste() {
+            let weight = parseFloat(document.getElementById('wasteWeight').value);
+            if (isNaN(weight) || weight <= 0) { 
+                alert('Masukkan berat limbah yang valid (kg)'); 
+                return; 
+            }
+            
+            let imageUrl = null;
+            if (wasteImageData) {
+                imageUrl = URL.createObjectURL(wasteImageData);
+            }
+            
+            wasteRecords.push({ 
+                id: Date.now(), 
+                type: document.getElementById('wasteType').value, 
+                weight: weight, 
+                note: document.getElementById('wasteNote').value, 
+                date: new Date().toLocaleDateString('id-ID'),
+                image: imageUrl
+            });
+            localStorage.setItem('pantasWaste', JSON.stringify(wasteRecords));
+            let incentive = weight * 500; 
+            revenueTotal += incentive; 
+            localStorage.setItem('pantasRevenue', revenueTotal);
+            document.getElementById('wasteWeight').value = ''; 
+            document.getElementById('wasteNote').value = '';
+            removeWasteImage();
+            updateDashboard(); 
+            renderWasteHistory(); 
+            showToast(`✅ Limbah ${weight}kg tercatat + insentif Rp${incentive}`);
+        }
+
+        function renderWasteHistory() {
+            const container = document.getElementById('wasteHistoryList');
+            if (!container) return;
+            if (!wasteRecords || wasteRecords.length === 0) { 
+                container.innerHTML = '<div class="empty-state">Belum ada catatan limbah</div>'; 
+                return; 
+            }
+            container.innerHTML = wasteRecords.slice().reverse().slice(0, 5).map(w => `
+                <div class="waste-item">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        ${w.image ? `<img src="${w.image}" style="width:36px; height:36px; border-radius:8px; object-fit:cover; border:1px solid #e2ede8;">` : '<div style="width:36px; height:36px; border-radius:8px; background:#e8f5ed; display:flex; align-items:center; justify-content:center; color:#2d9b6e;"><i class="fas fa-apple-alt"></i></div>'}
+                        <div><strong>${w.type}</strong><br><span style="font-size:10px;">${w.date}</span></div>
+                    </div>
+                    <div><strong>${w.weight} kg</strong> <span class="badge badge-success">terkirim</span></div>
+                </div>
+            `).join('');
+        }
+
+        function renderPrediction() {
+            const predData = [{ day: "Senin", kg: 6.5 }, { day: "Selasa", kg: 9.2 }, { day: "Rabu", kg: 17.8 }, { day: "Kamis", kg: 11.4 }, { day: "Jumat", kg: 15.3 }, { day: "Sabtu", kg: 13.0 }, { day: "Minggu", kg: 8.7 }];
+            const chartContainer = document.getElementById('predictionChart');
+            if (chartContainer) {
+                let maxKg = Math.max(...predData.map(d => d.kg), 1);
+                chartContainer.innerHTML = predData.map(day => `
+                    <div class="chart-bar">
+                        <span style="width:55px; font-size:12px; font-weight:600;">${day.day}</span>
+                        <div style="flex:1; min-width:120px; height:30px; background:#e9f1f6; border-radius:20px; overflow:hidden;">
+                            <div style="height:100%; background:${day.kg > 14 ? '#e67e22' : '#2d9b6e'}; border-radius:20px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; color:white; font-size:10px; font-weight:700; width:${(day.kg / maxKg) * 100}%;">
+                                ${day.kg} kg
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            document.getElementById('predictionAlert').innerHTML = '⚠️ <strong>Rabu diprediksi lonjakan limbah 68%</strong> — segera atur stok dan upload surplus!';
+            document.getElementById('recommendationList').innerHTML = `
+                <div class="alert-success">📈 Upload surplus di jam makan siang meningkatkan penjualan 42%.</div>
+                <div class="alert-warning">🌱 Dengan mendaur ulang 50kg limbah, hemat 42.5kg CO₂eq.</div>
+            `;
+        }
+
+        function showToast(msg) { 
+            let toast = document.createElement('div'); 
+            toast.className = 'toast-message';
+            toast.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`; 
+            document.body.appendChild(toast); 
+            setTimeout(() => toast.remove(), 2500); 
+        }
+
+        function showTab(tabId) {
+            ['dashboard', 'upload', 'waste', 'prediction', 'reviews'].forEach(t => {
+                let el = document.getElementById(`${t}Tab`);
+                if (el) el.classList.add('hidden');
+            });
+            let targetTab = document.getElementById(`${tabId}Tab`);
+            if (targetTab) targetTab.classList.remove('hidden');
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.tab === tabId) btn.classList.add('active');
+            });
+            if (tabId === 'waste') renderWasteHistory();
+            if (tabId === 'prediction') renderPrediction();
+            if (tabId === 'dashboard') updateDashboard();
+            if (tabId === 'reviews') renderAllReviews();
+        }
+
+        function downloadESG() {
+            let totalWaste = wasteRecords.reduce((s, w) => s + w.weight, 0);
+            let co2 = (totalWaste * 0.85).toFixed(1);
+            let trees = Math.floor(totalWaste * 0.05);
+            let stats = calculateRatingStats();
+            alert(`📄 Laporan ESG PANTAS\n━━━━━━━━━━━━━━━━━━\n⭐ Rating: ${stats.avg.toFixed(1)} (${stats.total} ulasan)\n✅ Limbah Terselamatkan: ${totalWaste} kg\n🌱 CO₂eq Tereduksi: ${co2} kg\n🌳 Setara Menanam ${trees} pohon\n💚 Pendapatan: ${document.getElementById('revenue').innerText}`);
+        }
+
+        // ============ MODAL ============
+        function checkAllCheckboxes() {
+            let allChecked = true;
+            for (let i = 1; i <= 5; i++) {
+                let cb = document.getElementById(`check${i}`);
+                if (cb && !cb.checked) allChecked = false;
+            }
+            document.getElementById('agreeBtn').disabled = !allChecked;
+        }
+
+        function setupCheckboxListeners() {
+            for (let i = 1; i <= 5; i++) {
+                let cb = document.getElementById(`check${i}`);
+                if (cb) cb.addEventListener('change', checkAllCheckboxes);
+            }
+        }
+
+        function acceptAgreement() {
+            localStorage.setItem('pantasAgreementAccepted', 'true');
+            localStorage.setItem('pantasName', 'Warung MbaK Harum');
+            document.getElementById('policyModal').classList.add('hidden-modal');
+            document.getElementById('mainContent').classList.remove('hide-content');
+            initDashboard();
+            showToast('✅ Selamat bergabung!');
+        }
+
+        function resetAndShowModal() {
+            localStorage.removeItem('pantasAgreementAccepted');
+            localStorage.removeItem('pantasName');
+            document.getElementById('policyModal').classList.remove('hidden-modal');
+            document.getElementById('mainContent').classList.add('hide-content');
+            for (let i = 1; i <= 5; i++) {
+                let cb = document.getElementById(`check${i}`);
+                if (cb) cb.checked = false;
+            }
+            document.getElementById('agreeBtn').disabled = true;
+        }
+
+        function loadDataFromStorage() {
+            let storedWaste = localStorage.getItem('pantasWaste');
+            let storedSurplus = localStorage.getItem('pantasSurplus');
+            let storedRevenue = localStorage.getItem('pantasRevenue');
+            let storedReviews = localStorage.getItem('pantasReviews');
+            
+            wasteRecords = storedWaste ? JSON.parse(storedWaste) : [];
+            surplusList = storedSurplus ? JSON.parse(storedSurplus) : [];
+            revenueTotal = storedRevenue ? parseFloat(storedRevenue) : 0;
+            reviews = (storedReviews && JSON.parse(storedReviews).length > 0) ? JSON.parse(storedReviews) : [...defaultReviews];
+            localStorage.setItem('pantasReviews', JSON.stringify(reviews));
+        }
+
+        function initDashboard() {
+            initCharts();
+            setupFilters();
+            updateDashboard();
+            renderWasteHistory();
+            renderPrediction();
+            renderAllReviews();
+            showTab('dashboard');
+            document.getElementById('ownerName').innerText = localStorage.getItem('pantasName') || 'Warung MbaK Harum';
+        }
+
+        // ============ START ============
+        (function() {
+            setupCheckboxListeners();
+            document.getElementById('agreeBtn').onclick = acceptAgreement;
+            document.getElementById('resetBtn').onclick = resetAndShowModal;
+            document.querySelectorAll('.nav-item').forEach(btn => { 
+                btn.addEventListener('click', () => { if (btn.dataset.tab) showTab(btn.dataset.tab); }); 
+            });
+            loadDataFromStorage();
+            
+            if (localStorage.getItem('pantasAgreementAccepted') === 'true') {
+                document.getElementById('policyModal').classList.add('hidden-modal');
+                document.getElementById('mainContent').classList.remove('hide-content');
+                initDashboard();
+            } else {
+                document.getElementById('policyModal').classList.remove('hidden-modal');
+                document.getElementById('mainContent').classList.add('hide-content');
+            }
+        })();
+    </script>
+</body>
+</html>

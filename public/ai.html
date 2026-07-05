@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>PANTAS - AI Intelligence | Prediksi Cerdas & ESG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f0f5f2;
+            color: #1a2a3a;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            background: #f6faf8;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .status-bar {
+            padding: 14px 20px 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c5a4a;
+            background: transparent;
+        }
+
+        .header {
+            padding: 12px 20px 20px;
+            background: white;
+            border-bottom: 1px solid rgba(45, 155, 110, 0.15);
+        }
+
+        .back-btn {
+            background: #f0f5f2;
+            border: 1px solid #dce8e2;
+            padding: 10px 18px;
+            border-radius: 40px;
+            color: #2d5a4a;
+            cursor: pointer;
+            margin-bottom: 16px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #e8f5ed;
+            border-color: #2d9b6e;
+            transform: translateX(-3px);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0d2f23;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .header h1 i {
+            color: #2d9b6e;
+        }
+
+        .header p {
+            font-size: 12px;
+            color: #5a8f7a;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        .main-content {
+            padding: 16px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 18px;
+            margin-bottom: 16px;
+            border: 1px solid #e2ede8;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            border-color: #bbf7d0;
+        }
+
+        .card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #0d2f23;
+            flex-wrap: wrap;
+        }
+
+        .card h3 i {
+            color: #2d9b6e;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 10px;
+            margin: 16px 0 8px;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            flex: 1;
+            min-width: 90px;
+            background: #f8fcfb;
+            border-radius: 18px;
+            padding: 14px 6px;
+            text-align: center;
+            border: 1px solid #e2ede8;
+        }
+        .stat-value {
+            font-size: 26px;
+            font-weight: 800;
+            color: #2d9b6e;
+        }
+        .stat-label {
+            font-size: 10px;
+            color: #5a8f7a;
+            margin-top: 6px;
+        }
+
+        .prediction-chart {
+            background: #f8fcfb;
+            border-radius: 18px;
+            padding: 14px;
+            margin: 12px 0;
+            border: 1px solid #e2ede8;
+        }
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .bar-label {
+            width: 55px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #1a4d3a;
+        }
+        .bar-fill {
+            flex: 1;
+            min-width: 150px;
+            height: 34px;
+            background: #f0f5f2;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .bar-value {
+            height: 100%;
+            background: linear-gradient(90deg, #2d9b6e, #6ee7b7);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            transition: width 0.5s ease;
+        }
+        .high-risk {
+            background: linear-gradient(90deg, #f472b6, #ec4899);
+        }
+
+        .insight-badge {
+            background: #f0fdf4;
+            border-left: 4px solid #2d9b6e;
+            padding: 12px;
+            border-radius: 14px;
+            margin-top: 14px;
+            font-size: 12px;
+            color: #1a4d3a;
+            line-height: 1.5;
+        }
+
+        .insight-badge i {
+            color: #2d9b6e;
+            margin-right: 6px;
+        }
+
+        pre {
+            background: #f8fcfb;
+            color: #1a4d3a;
+            padding: 14px;
+            border-radius: 16px;
+            overflow-x: auto;
+            font-size: 10px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            border: 1px solid #e2ede8;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.6;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(95deg, #2d9b6e, #1a7a55);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 16px rgba(45, 155, 110, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 10px;
+        }
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f5f2;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: #1a4d3a;
+            flex-wrap: wrap;
+        }
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        .feature-list i {
+            width: 24px;
+            color: #2d9b6e;
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0fdf4;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 10px;
+            color: #2d9b6e;
+            font-weight: 600;
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background: #2d9b6e;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        select {
+            width: 100%;
+            background: white;
+            border: 1.5px solid #dce8e2;
+            border-radius: 40px;
+            padding: 12px 16px;
+            color: #1a4d3a;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235a8f7a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #2d9b6e;
+            box-shadow: 0 0 0 3px rgba(45, 155, 110, 0.1);
+        }
+
+        select option {
+            background: white;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 12px;
+            background: #f0f5f2;
+            border: 1px solid #dce8e2;
+            border-radius: 40px;
+            color: #2d5a4a;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #e8f5ed;
+            border-color: #2d9b6e;
+        }
+
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #0d2f23;
+            color: #d1fae5;
+            padding: 12px 20px;
+            border-radius: 60px;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(45, 155, 110, 0.3);
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .toast-message.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-message i {
+            margin-right: 8px;
+            color: #6ee7b7;
+        }
+
+        .recommendation-box {
+            background: #f8fcfb;
+            border-radius: 18px;
+            padding: 14px;
+            margin-top: 8px;
+            border: 1px solid #e2ede8;
+        }
+        .recommendation-content {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .recommendation-icon {
+            font-size: 24px;
+            color: #2d9b6e;
+            flex-shrink: 0;
+        }
+        .recommendation-text {
+            flex: 1;
+        }
+        .recommendation-title {
+            color: #1a4d3a;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .recommendation-meta {
+            font-size: 10px;
+            color: #5a8f7a;
+            margin-top: 8px;
+        }
+
+        .badge-ai {
+            background: #f0fdf4;
+            color: #2d9b6e;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 600;
+            border: 1px solid #bbf7d0;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f0f5f2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d9b6e;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 450px) {
+            .chart-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .bar-label {
+                width: auto;
+            }
+            .bar-fill {
+                width: 100%;
+            }
+            .stats-row {
+                flex-direction: row;
+            }
+            .stat-card {
+                min-width: 80px;
+            }
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="status-bar">
+            <span>AI Dashboard</span>
+            <span><i class="fas fa-microchip"></i> <span class="live-indicator"><span class="pulse"></span> LIVE</span></span>
+        </div>
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </button>
+            <h1>
+                <i class="fas fa-brain"></i> AI Intelligence
+                <span class="badge-ai">v2.4</span>
+            </h1>
+            <p>Machine Learning untuk Prediksi Limbah & Optimasi ESG • <strong style="color:#2d9b6e;">Model Ensemble</strong></p>
+        </div>
+
+        <div class="main-content">
+            <div class="card">
+                <h3><i class="fas fa-chart-line"></i> Tentang Model ML</h3>
+                <p style="margin-top: 8px; line-height: 1.6; color: #1a4d3a; font-size: 13px;">
+                    Model <strong style="color: #2d9b6e;">Random Forest Regressor + XGBoost Ensemble</strong> 
+                    dengan akurasi <strong style="color: #2d9b6e;">89.2%</strong>. Dilatih dari 
+                    <strong style="color: #2d9b6e;">2.847 transaksi</strong> riwayat surplus & limbah di ekosistem PANTAS.
+                </p>
+                <div class="stats-row">
+                    <div class="stat-card"><div class="stat-value">89.2%</div><div class="stat-label">Akurasi</div></div>
+                    <div class="stat-card"><div class="stat-value">1.4kg</div><div class="stat-label">MAE Error</div></div>
+                    <div class="stat-card"><div class="stat-value">14 hari</div><div class="stat-label">Prediksi</div></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-chart-simple"></i> Prediksi Limbah 7 Hari</h3>
+                <div class="prediction-chart" id="predictionChart"></div>
+                <div class="insight-badge" id="insightMessage">
+                    <i class="fas fa-lightbulb"></i> <strong>AI Insight:</strong> Memuat analisis prediktif...
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-robot"></i> Rekomendasi AI Real-time</h3>
+                <div class="recommendation-box" id="recommendationBox">
+                    <div class="recommendation-content">
+                        <i class="fas fa-microphone-alt recommendation-icon"></i>
+                        <div class="recommendation-text">
+                            <div class="recommendation-title" id="recommendationText">Menganalisis data historis...</div>
+                            <div class="recommendation-meta" id="recommendationMeta"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-file-alt"></i> ESG Report Generator</h3>
+                <pre id="esgPreview">
+=== PANTAS ESG IMPACT REPORT ===
+Mitra: [Belum dipilih]
+Periode: April 2026
+─────────────────────────
+Loading data...
+                </pre>
+                <div class="form-group">
+                    <select id="partnerSelect">
+                        <option value="warung">Warung MbaK Harum</option>
+                        <option value="burger">BurgerHaus</option>
+                        <option value="greeneat">GreenEat Cafe</option>
+                        <option value="processor">Mitra Pengolah (Semua)</option>
+                    </select>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-primary" onclick="generateESGReport()">
+                        <i class="fas fa-download"></i> Generate PDF
+                    </button>
+                    <button class="btn-secondary" onclick="shareESG()">
+                        <i class="fas fa-share-alt"></i> Bagikan
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-cogs"></i> Fitur AI Canggih</h3>
+                <ul class="feature-list">
+                    <li><i class="fas fa-tag"></i> Klasifikasi jenis limbah otomatis (Computer Vision)</li>
+                    <li><i class="fas fa-chart-pie"></i> Rekomendasi harga surplus dinamis</li>
+                    <li><i class="fas fa-bell"></i> Notifikasi prediksi surplus via WhatsApp</li>
+                    <li><i class="fas fa-leaf"></i> Kalkulator karbon & ESG otomatis (GRI)</li>
+                    <li><i class="fas fa-route"></i> Optimasi rute penjemputan limbah</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast-message">
+        <i class="fas fa-info-circle"></i>
+        <span></span>
+    </div>
+
+    <script>
+        // ============================================================
+        // DATA & STATE
+        // ============================================================
+        const predictionDays = [
+            { day: "Senin", kg: 6.2, risk: false },
+            { day: "Selasa", kg: 8.7, risk: false },
+            { day: "Rabu", kg: 16.4, risk: true },
+            { day: "Kamis", kg: 10.2, risk: false },
+            { day: "Jumat", kg: 14.8, risk: false },
+            { day: "Sabtu", kg: 18.1, risk: true },
+            { day: "Minggu", kg: 7.5, risk: false }
+        ];
+
+        let historicalTotalWaste = 1428;
+        let insightInterval;
+
+        // ============================================================
+        // RENDER PREDICTION CHART
+        // ============================================================
+        function renderPredictionChart() {
+            const container = document.getElementById('predictionChart');
+            if (!container) return;
+            
+            const maxKg = Math.max(...predictionDays.map(d => d.kg), 1);
+            container.innerHTML = predictionDays.map(day => `
+                <div class="chart-bar">
+                    <span class="bar-label">${day.day}</span>
+                    <div class="bar-fill">
+                        <div class="bar-value ${day.risk ? 'high-risk' : ''}" style="width: ${(day.kg / maxKg) * 100}%;">
+                            ${day.kg} kg
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            const highRiskDays = predictionDays.filter(d => d.risk);
+            const insightDiv = document.getElementById('insightMessage');
+            if (highRiskDays.length > 0) {
+                const riskDayNames = highRiskDays.map(d => d.day).join(', ');
+                insightDiv.innerHTML = `
+                    <i class="fas fa-exclamation-triangle" style="color:#f472b6;"></i> 
+                    <strong>AI Alert:</strong> Lonjakan limbah diprediksi pada ${riskDayNames}. 
+                    Rekomendasi: tingkatkan kapasitas pickup & upload surplus lebih awal.
+                `;
+            } else {
+                insightDiv.innerHTML = `
+                    <i class="fas fa-check-circle" style="color:#2d9b6e;"></i> 
+                    <strong>AI Insight:</strong> Pola limbah stabil dalam 7 hari ke depan. 
+                    Gunakan kesempatan untuk mengoptimalkan jadwal pickup rutin.
+                `;
+            }
+            
+            generateRecommendation();
+        }
+
+        // ============================================================
+        // GENERATE RECOMMENDATION
+        // ============================================================
+        function generateRecommendation() {
+            const today = new Date().getDay();
+            const dayMap = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const todayName = dayMap[today];
+            const todayPred = predictionDays.find(d => d.day === todayName);
+            const upcomingRisk = predictionDays.find(d => d.risk && d.day !== todayName);
+            
+            const recText = document.getElementById('recommendationText');
+            const recMeta = document.getElementById('recommendationMeta');
+            
+            if (todayPred && todayPred.risk) {
+                recText.innerHTML = '⚠️ Hari ini diperkirakan surplus tinggi! Segera upload menu surplus ke platform untuk mengurangi limbah & tingkatkan pendapatan hingga 35%.';
+                recMeta.innerHTML = 'Berdasarkan analisis 50 transaksi terakhir • confidence: 92%';
+            } else if (upcomingRisk) {
+                recText.innerHTML = `📈 Prediksi lonjakan pada ${upcomingRisk.day} (${upcomingRisk.kg}kg). Siapkan tim logistik & aktifkan notifikasi AI untuk antisipasi lebih awal.`;
+                recMeta.innerHTML = 'Rekomendasi dihasilkan oleh model XGBoost • update 2 jam lalu';
+            } else {
+                recText.innerHTML = '✅ Kondisi stabil. Gunakan fitur "Optimasi Harga Dinamis" untuk meningkatkan daya tarik surplus makanan dan kurangi waste lebih agresif.';
+                recMeta.innerHTML = 'Saran berdasarkan pola konsumsi musiman • Ramah lingkungan';
+            }
+        }
+
+        // ============================================================
+        // ESG REPORT
+        // ============================================================
+        function generateESGReport() {
+            const partner = document.getElementById('partnerSelect').value;
+            let partnerName = "";
+            let wasteContribution = 0;
+            
+            switch(partner) {
+                case 'warung':
+                    partnerName = "Warung MbaK Harum";
+                    wasteContribution = 312;
+                    break;
+                case 'burger':
+                    partnerName = "BurgerHaus";
+                    wasteContribution = 248;
+                    break;
+                case 'greeneat':
+                    partnerName = "GreenEat Cafe";
+                    wasteContribution = 198;
+                    break;
+                default:
+                    partnerName = "Semua Mitra Pengolah & HOREKA";
+                    wasteContribution = historicalTotalWaste;
+            }
+            
+            const co2Saved = (wasteContribution * 1.65).toFixed(1);
+            const mealsSaved = Math.round(wasteContribution * 3.2);
+            const treesEquivalent = (co2Saved / 22).toFixed(1);
+            
+            const esgText = `=== PANTAS ESG IMPACT REPORT ===
+Mitra: ${partnerName}
+Periode: April 2026 (YTD)
+─────────────────────────
+✅ Total limbah terkelola: ${wasteContribution} kg
+🌱 Estimasi emisi dihindari: ${co2Saved} kg CO₂eq
+🍽️ Makanan terselamatkan: ${mealsSaved} porsi
+🌳 Setara dengan menanam ${treesEquivalent} pohon/tahun
+🎯 Kontribusi ke SDGs: 12.3 (Zero Food Waste) ✔️
+🏆 Sertifikasi: PANTAS Circular Economy Verified
+─────────────────────────
+*Laporan dihasilkan oleh AI Impact Tracker v2.4
+*Data real-time dari blockchain pangan PANTAS`;
+            
+            document.getElementById('esgPreview').innerText = esgText;
+            showToast(`✅ Laporan ESG untuk ${partnerName} berhasil di-generate`);
+        }
+
+        // ============================================================
+        // SHARE & COPY
+        // ============================================================
+        function shareESG() {
+            const esgText = document.getElementById('esgPreview').innerText;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Laporan ESG PANTAS',
+                    text: esgText,
+                }).catch(() => {
+                    copyToClipboard(esgText);
+                });
+            } else {
+                copyToClipboard(esgText);
+            }
+        }
+        
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            showToast('📋 Laporan ESG disalin ke clipboard');
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastSpan = toast.querySelector('span');
+            toastSpan.textContent = msg;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // ============================================================
+        // NAVIGATION
+        // ============================================================
+        function goBack() {
+            if (document.referrer && document.referrer !== '') {
+                window.history.back();
+            } else {
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = 'index.html';
+                }
+            }
+        }
+
+        // ============================================================
+        // REAL-TIME INSIGHTS
+        // ============================================================
+        function startRealtimeInsights() {
+            insightInterval = setInterval(() => {
+                generateRecommendation();
+            }, 30000);
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        function init() {
+            renderPredictionChart();
+            startRealtimeInsights();
+            generateESGReport();
+        }
+
+        init();
+
+        window.addEventListener('beforeunload', () => {
+            if (insightInterval) clearInterval(insightInterval);
+        });
+    </script>
+</body>
+</html>

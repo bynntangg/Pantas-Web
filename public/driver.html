@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>PANTAS – Driver Mitra Zero Food Waste</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background: #f0f5f2;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            color: #1a2a3a;
+            overflow-x: hidden;
+        }
+
+        /* ===== APP WRAPPER - FULL LAYAR ===== */
+        .app-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background: #f6faf8;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* ===== STATUS BAR ===== */
+        .status-bar {
+            padding: 8px 20px 4px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+            color: #2c5a4a;
+            background: #f6faf8;
+            flex-shrink: 0;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            padding: 10px 20px 14px;
+            background: #f6faf8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 1px solid rgba(45, 155, 110, 0.15);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(246, 250, 248, 0.95);
+            backdrop-filter: blur(8px);
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-area .logo-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            border: 2px solid #2d9b6e;
+            background: linear-gradient(135deg, #2d9b6e, #1a7a55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 800;
+        }
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0d2f23, #2d9b6e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .logo-text p {
+            font-size: 10px;
+            font-weight: 500;
+            color: #5a8f7a;
+            margin-top: -2px;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .driver-badge {
+            background: #e8f5ed;
+            border: 1px solid #bbf7d0;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #2d9b6e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+        .driver-badge i {
+            font-size: 16px;
+        }
+        .back-btn {
+            background: #f0f5f2;
+            border: 1px solid #dce8e2;
+            padding: 8px 18px;
+            border-radius: 40px;
+            color: #2d5a4a;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+        .back-btn:hover {
+            background: #e8f5ed;
+            border-color: #2d9b6e;
+            transform: translateX(-2px);
+        }
+
+        /* ===== MAIN CONTENT - FULL WIDTH ===== */
+        .main-content {
+            flex: 1;
+            padding: 16px 20px 30px;
+            background: #f6faf8;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            align-items: start;
+            width: 100%;
+        }
+        .main-content.single-col {
+            grid-template-columns: 1fr;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ===== BOTTOM NAV - DESKTOP ===== */
+        .bottom-nav {
+            display: none;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 20px 20px;
+            border: 1px solid #e2ede8;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            transition: 0.15s;
+            width: 100%;
+        }
+        .card:hover {
+            border-color: #bbf7d0;
+        }
+        .card-full {
+            grid-column: 1 / -1;
+        }
+
+        .earnings-card {
+            border-left: 4px solid #2d9b6e;
+        }
+
+        .balance-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .balance-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #5a8f7a;
+        }
+        .balance-amount {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0d2f23;
+            letter-spacing: -0.5px;
+        }
+        .withdraw-btn {
+            background: #2d9b6e;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 60px;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(45, 155, 110, 0.25);
+            transition: 0.15s;
+        }
+        .withdraw-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(45, 155, 110, 0.3);
+        }
+        .withdraw-btn:active {
+            transform: scale(0.96);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .stat-badge {
+            background: #f8fcfb;
+            border-radius: 16px;
+            padding: 12px 8px;
+            text-align: center;
+            border: 1px solid #e2ede8;
+            transition: 0.15s;
+        }
+        .stat-badge:hover {
+            border-color: #2d9b6e;
+            transform: translateY(-2px);
+        }
+        .stat-badge .value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0d2f23;
+        }
+        .stat-badge .label {
+            font-size: 10px;
+            font-weight: 500;
+            color: #5a8f7a;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #0d2f23;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .section-title i {
+            color: #2d9b6e;
+        }
+
+        .surge-badge {
+            background: #fef9ea;
+            border: 1px solid #f7e8c8;
+            padding: 8px 16px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 14px;
+            color: #b8860b;
+            flex-wrap: wrap;
+            font-weight: 600;
+        }
+
+        /* ===== ORDER ITEMS ===== */
+        .order-item {
+            background: #f8fcfb;
+            border-radius: 16px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            border: 1px solid #e2ede8;
+            border-left: 4px solid #2d9b6e;
+            transition: 0.15s;
+        }
+        .order-item:hover {
+            border-color: #bbf7d0;
+            transform: translateX(4px);
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            font-size: 12px;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .order-merchant {
+            font-weight: 700;
+            color: #0d2f23;
+            font-size: 13px;
+        }
+        .order-earning {
+            font-weight: 700;
+            color: #2d9b6e;
+            font-size: 13px;
+        }
+        .order-detail {
+            font-size: 10px;
+            color: #5a8f7a;
+            display: flex;
+            gap: 14px;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+        .order-status {
+            font-size: 10px;
+            padding: 3px 12px;
+            border-radius: 40px;
+            background: #e8f5ed;
+            color: #2d9b6e;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .bonus-item {
+            background: #f8fcfb;
+            border-radius: 14px;
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e2ede8;
+            flex-wrap: wrap;
+            gap: 6px;
+            font-size: 11px;
+            transition: 0.15s;
+        }
+        .bonus-item:hover {
+            border-color: #bbf7d0;
+        }
+        .progress-bar {
+            height: 4px;
+            background: #e2ede8;
+            border-radius: 8px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2d9b6e, #6ee7b7);
+            border-radius: 8px;
+            width: 0%;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 20px 10px;
+            color: #8ab0a0;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .empty-state i {
+            font-size: 28px;
+            margin-bottom: 8px;
+            opacity: 0.3;
+            display: block;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(95deg, #2d9b6e, #1a7a55);
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 4px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(45, 155, 110, 0.2);
+            transition: 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(45, 155, 110, 0.3);
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+        .btn-secondary {
+            background: #f0f5f2;
+            color: #2d5a4a;
+            border: 1px solid #dce8e2;
+            box-shadow: none;
+        }
+        .btn-secondary:hover {
+            background: #e8f5ed;
+            border-color: #2d9b6e;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #dce8e2;
+            border-radius: 20px;
+            font-size: 13px;
+            background: white;
+            margin-bottom: 12px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #2d9b6e;
+            box-shadow: 0 0 0 3px rgba(45, 155, 110, 0.1);
+        }
+
+        .alert-info {
+            background: #e8f5ed;
+            border-left: 4px solid #2d9b6e;
+            padding: 10px 14px;
+            border-radius: 14px;
+            color: #1a4d3a;
+            font-size: 11px;
+            margin: 8px 0;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ===== RATING ===== */
+        .rating-stars i {
+            font-size: 12px;
+        }
+        .rating-average {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0d2f23;
+        }
+        .rating-item {
+            padding: 6px 0;
+            border-bottom: 1px solid #e2ede8;
+            font-size: 11px;
+        }
+        .rating-item:last-child {
+            border-bottom: none;
+        }
+        .rating-item .customer {
+            font-weight: 600;
+        }
+        .rating-item .comment {
+            color: #5a8f7a;
+            font-size: 10px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: #0d2f23;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 1000;
+            max-width: 90%;
+            text-align: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+        }
+        .toast-message.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* ===== SIMULATION MODAL ===== */
+        .simulation-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+        }
+        .simulation-modal {
+            max-width: 520px;
+            width: 92%;
+            background: #ffffff;
+            border-radius: 36px;
+            overflow: hidden;
+            animation: modalSlideIn 0.3s ease;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+        .simulation-header {
+            background: linear-gradient(135deg, #0d2f23, #1a7a55);
+            padding: 18px 20px 14px;
+            text-align: center;
+            color: white;
+        }
+        .simulation-header h3 {
+            font-size: 19px;
+            margin: 4px 0;
+            font-weight: 700;
+        }
+        .simulation-map {
+            background: #dce4ec;
+            height: 240px;
+            position: relative;
+            overflow: hidden;
+        }
+        .map-grid-sim {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(#c8d4de 1px, transparent 1px), linear-gradient(90deg, #c8d4de 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .sim-vehicle {
+            position: absolute;
+            font-size: 38px;
+            filter: drop-shadow(2px 6px 10px rgba(0, 0, 0, 0.2));
+            transition: left 0.4s ease, top 0.4s ease;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        .sim-pin {
+            position: absolute;
+            font-size: 30px;
+            transform: translate(-50%, -50%);
+        }
+        .progress-sim {
+            padding: 14px 18px 6px;
+            background: white;
+        }
+        .progress-bar-sim {
+            height: 5px;
+            background: #e2ede8;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 6px 0;
+        }
+        .progress-fill-sim {
+            height: 100%;
+            background: linear-gradient(90deg, #2d9b6e, #6ee7b7);
+            width: 0%;
+            transition: width 0.2s;
+        }
+        .sim-status {
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            margin: 4px 0;
+            color: #0d2f23;
+        }
+        .sim-footer {
+            padding: 12px 18px 20px;
+            display: flex;
+            gap: 10px;
+            background: white;
+            border-top: 1px solid #e2ede8;
+        }
+        .sim-footer .btn-primary {
+            margin: 0;
+            flex: 1;
+        }
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================================ */
+        /* ===== CONSENT MODAL - FULL LAYAR ===== */
+        /* ============================================================ */
+        .consent-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            padding: 20px;
+        }
+        .consent-modal-container {
+            max-width: 580px;
+            width: 100%;
+            max-height: 90vh;
+            background: white;
+            border-radius: 32px;
+            overflow-y: auto;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25);
+            animation: modalSlideIn 0.35s ease;
+        }
+        .consent-modal-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .consent-modal-container::-webkit-scrollbar-thumb {
+            background: #2d9b6e;
+            border-radius: 10px;
+        }
+        .consent-modal-header {
+            padding: 28px 30px 16px;
+            text-align: center;
+            border-bottom: 1px solid #e2ede8;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-radius: 32px 32px 0 0;
+        }
+        .consent-modal-header .icon-wrap {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2d9b6e, #1a7a55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 32px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(45, 155, 110, 0.3);
+        }
+        .consent-modal-header h2 {
+            font-size: 26px;
+            color: #0d2f23;
+            font-weight: 800;
+        }
+        .consent-modal-header p {
+            font-size: 13px;
+            color: #5a8f7a;
+            margin-top: 4px;
+        }
+        .consent-modal-body {
+            padding: 24px 30px 30px;
+        }
+        .policy-card {
+            background: #f8fcfb;
+            border-radius: 20px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            border: 1px solid #e2ede8;
+            transition: 0.15s;
+        }
+        .policy-card:hover {
+            border-color: #bbf7d0;
+        }
+        .policy-title {
+            font-weight: 800;
+            margin-bottom: 14px;
+            color: #2d9b6e;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .policy-title i {
+            font-size: 18px;
+        }
+        .spec-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .spec-list li {
+            padding: 8px 0;
+            display: flex;
+            gap: 12px;
+            font-size: 13px;
+            border-bottom: 1px solid #eef2f5;
+            align-items: flex-start;
+            line-height: 1.5;
+        }
+        .spec-list li:last-child {
+            border-bottom: none;
+        }
+        .spec-list li i {
+            width: 20px;
+            color: #2d9b6e;
+            font-size: 14px;
+            margin-top: 2px;
+        }
+        .vehicle-selector {
+            background: #f8fcfb;
+            border-radius: 18px;
+            padding: 10px;
+            margin-bottom: 14px;
+        }
+        .vehicle-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 40px;
+            background: white;
+            margin-bottom: 8px;
+            cursor: pointer;
+            border: 2px solid #dce8e2;
+            transition: 0.2s;
+        }
+        .vehicle-option:last-child {
+            margin-bottom: 0;
+        }
+        .vehicle-option.selected {
+            border: 2px solid #2d9b6e;
+            background: #e8f5ed;
+            box-shadow: 0 0 0 3px rgba(45, 155, 110, 0.08);
+        }
+        .vehicle-option input {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            accent-color: #2d9b6e;
+        }
+        .vehicle-option label {
+            flex: 1;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 13px;
+        }
+        .vehicle-option label small {
+            display: block;
+            font-weight: 400;
+            color: #5a8f7a;
+            font-size: 11px;
+        }
+        .checkbox-group {
+            margin: 16px 0 14px;
+            background: #f8fcfb;
+            padding: 14px 16px;
+            border-radius: 18px;
+            border: 1px solid #e2ede8;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+        .checkbox-label:last-child {
+            margin-bottom: 0;
+        }
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            accent-color: #2d9b6e;
+            flex-shrink: 0;
+        }
+        .agree-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(95deg, #2d9b6e, #1a7a55);
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+            box-shadow: 0 4px 16px rgba(45, 155, 110, 0.2);
+        }
+        .agree-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .agree-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(45, 155, 110, 0.35);
+        }
+
+        /* ============================================================ */
+        /* ===== RESPONSIVE ===== */
+        /* ============================================================ */
+
+        /* Large Desktop - Full Width */
+        @media (min-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 24px;
+                padding: 20px 24px 40px;
+            }
+            .card-full {
+                grid-column: 1 / -1;
+            }
+            .balance-amount {
+                font-size: 36px;
+            }
+            .header {
+                padding: 12px 24px 16px;
+            }
+            .logo-text h1 {
+                font-size: 28px;
+            }
+            .status-bar {
+                padding: 10px 24px 6px;
+            }
+        }
+
+        /* Tablet & smaller desktop */
+        @media (max-width: 1199px) and (min-width: 769px) {
+            .main-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 18px;
+                padding: 16px 20px 30px;
+            }
+            .card-full {
+                grid-column: 1 / -1;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .balance-amount {
+                font-size: 28px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 14px;
+                padding: 12px 14px 80px;
+            }
+            .card-full {
+                grid-column: 1;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .balance-amount {
+                font-size: 24px;
+            }
+            .header {
+                padding: 8px 14px 12px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .logo-area .logo-img {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+            .logo-text h1 {
+                font-size: 18px;
+            }
+            .logo-text p {
+                font-size: 8px;
+            }
+            .header-actions {
+                gap: 8px;
+                width: 100%;
+                justify-content: space-between;
+            }
+            .back-btn span {
+                display: none;
+            }
+            .back-btn {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+            .driver-badge {
+                padding: 6px 14px;
+                font-size: 11px;
+            }
+            .driver-badge i {
+                font-size: 14px;
+            }
+
+            /* Bottom Nav - Mobile */
+            .bottom-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(12px);
+                justify-content: space-around;
+                padding: 6px 8px 18px;
+                border-top: 1px solid rgba(45, 155, 110, 0.12);
+                z-index: 100;
+                box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
+            }
+            .nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 2px;
+                font-size: 10px;
+                font-weight: 600;
+                color: #8ab0a0;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 6px 14px;
+                border-radius: 40px;
+                transition: 0.2s;
+            }
+            .nav-item i {
+                font-size: 20px;
+                transition: 0.2s;
+            }
+            .nav-item.active {
+                color: #2d9b6e;
+                background: #e8f5ed;
+            }
+
+            /* Consent Modal Mobile */
+            .consent-modal-container {
+                max-width: 100%;
+                width: 100%;
+                max-height: 92vh;
+                border-radius: 24px 24px 0 0;
+                margin-top: auto;
+            }
+            .consent-modal-overlay {
+                align-items: flex-end;
+                padding: 0;
+            }
+            .consent-modal-header {
+                padding: 20px 20px 14px;
+                border-radius: 24px 24px 0 0;
+            }
+            .consent-modal-header .icon-wrap {
+                width: 56px;
+                height: 56px;
+                font-size: 24px;
+            }
+            .consent-modal-header h2 {
+                font-size: 20px;
+            }
+            .consent-modal-body {
+                padding: 16px 18px 20px;
+            }
+            .policy-card {
+                padding: 14px 16px;
+            }
+            .policy-title {
+                font-size: 13px;
+            }
+            .spec-list li {
+                font-size: 12px;
+                padding: 6px 0;
+            }
+            .vehicle-option {
+                padding: 10px 14px;
+            }
+            .vehicle-option label {
+                font-size: 12px;
+            }
+            .checkbox-label {
+                font-size: 12px;
+            }
+            .agree-btn {
+                padding: 14px;
+                font-size: 14px;
+            }
+
+            /* Simulation Modal Mobile */
+            .simulation-modal {
+                max-width: 100%;
+                width: 100%;
+                border-radius: 24px 24px 0 0;
+                margin-top: auto;
+            }
+            .simulation-modal-overlay {
+                align-items: flex-end;
+            }
+            .simulation-map {
+                height: 200px;
+            }
+            .sim-vehicle {
+                font-size: 32px;
+            }
+            .sim-pin {
+                font-size: 26px;
+            }
+            .sim-footer {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .sim-footer .btn-primary {
+                width: 100%;
+            }
+
+            .toast-message {
+                bottom: 80px;
+                padding: 10px 18px;
+                font-size: 12px;
+                max-width: 92%;
+            }
+        }
+
+        /* Very small mobile */
+        @media (max-width: 400px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+            .stat-badge {
+                padding: 8px 4px;
+            }
+            .stat-badge .value {
+                font-size: 15px;
+            }
+            .balance-amount {
+                font-size: 20px;
+            }
+            .withdraw-btn {
+                padding: 8px 14px;
+                font-size: 11px;
+            }
+            .card {
+                padding: 14px 12px;
+            }
+            .section-title {
+                font-size: 14px;
+            }
+            .order-item {
+                padding: 10px 10px;
+            }
+            .order-merchant {
+                font-size: 12px;
+            }
+            .order-earning {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast-message"><span></span></div>
+
+    <!-- CONSENT MODAL - FULL LAYAR & BIG -->
+    <div id="consentModal" class="consent-modal-overlay">
+        <div class="consent-modal-container">
+            <div class="consent-modal-header">
+                <div class="icon-wrap"><i class="fas fa-handshake"></i></div>
+                <h2>Persetujuan Mitra Driver</h2>
+                <p>Baca kebijakan & spesifikasi dengan saksama sebelum memulai</p>
+            </div>
+            <div class="consent-modal-body">
+                <div class="policy-card">
+                    <div class="policy-title"><i class="fas fa-shield-alt"></i> Kebijakan Privasi & Keamanan Data</div>
+                    <ul class="spec-list">
+                        <li><i class="fas fa-map-marker-alt"></i> <strong>Lokasi Real-time:</strong> Diakses hanya saat status "Online" dan digunakan untuk optimasi rute</li>
+                        <li><i class="fas fa-database"></i> <strong>Perlindungan Data:</strong> Nama, nomor telepon, dan riwayat transaksi dienkripsi dengan standar industri</li>
+                        <li><i class="fas fa-clock"></i> <strong>Retensi Data:</strong> Riwayat order dan aktivitas disimpan maksimal 3 bulan untuk keperluan audit</li>
+                        <li><i class="fas fa-hand-peace"></i> <strong>Hak Driver:</strong> Anda dapat mengunduh dan menghapus data pribadi kapan saja</li>
+                        <li><i class="fas fa-share-alt"></i> <strong>Berbagi Data:</strong> Data hanya dibagikan dengan merchant/penerima untuk keperluan pengiriman</li>
+                    </ul>
+                </div>
+
+                <div class="policy-card">
+                    <div class="policy-title"><i class="fas fa-tasks"></i> Spesifikasi & Standar Kendaraan</div>
+                    <div class="vehicle-selector" id="vehicleSelectorArea">
+                        <div class="vehicle-option" data-vehicle="motor" onclick="selectVehicleType('motor')">
+                            <input type="radio" name="vehicleType" id="vehicleMotor" value="motor">
+                            <label for="vehicleMotor">
+                                <i class="fas fa-motorcycle"></i> Roda Dua (Motor)
+                                <small>Kapasitas kecil, lincah untuk area perkotaan</small>
+                            </label>
+                        </div>
+                        <div class="vehicle-option selected" data-vehicle="pickup" onclick="selectVehicleType('pickup')">
+                            <input type="radio" name="vehicleType" id="vehiclePickup" value="pickup" checked>
+                            <label for="vehiclePickup">
+                                <i class="fas fa-truck-pickup"></i> Mobil Pickup / Box
+                                <small>Logistik hotel, muatan besar hingga 300+ kg</small>
+                            </label>
+                        </div>
+                    </div>
+                    <ul class="spec-list" id="dynamicSpecList">
+                        <li><i class="fas fa-id-card"></i> KTP & NPWP aktif (wajib untuk penarikan > Rp1.000.000)</li>
+                        <li><i class="fas fa-temperature-low"></i> Tas pendingin / box bersih (wajib untuk makanan basah)</li>
+                        <li><i class="fas fa-hotel"></i> <strong>Fokus Zero Waste:</strong> Koordinasi dengan hotel/merchant untuk pengiriman tepat waktu</li>
+                        <li><i class="fas fa-certificate"></i> Sertifikasi keamanan pangan (pelatihan online gratis)</li>
+                    </ul>
+                </div>
+
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="agreePrivacy"> 
+                        <span>✅ Saya menyetujui Kebijakan Privasi & penggunaan lokasi real-time</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="agreeSpec"> 
+                        <span>✅ Saya memenuhi spesifikasi kendaraan yang dipilih</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="agreeTerms"> 
+                        <span>✅ Saya siap mendukung program Zero Food Waste PANTAS</span>
+                    </label>
+                </div>
+
+                <button id="confirmConsentBtn" class="agree-btn" disabled>
+                    <i class="fas fa-check-circle"></i> Setujui & Mulai Bertugas
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- APP WRAPPER - FULL LAYAR -->
+    <div class="app-wrapper" id="appContainer" style="display: none;">
+
+        <!-- STATUS BAR -->
+        <div class="status-bar"><span>9:41</span><span><i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></span></div>
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo-area">
+                <div class="logo-img"><i class="fas fa-leaf"></i></div>
+                <div class="logo-text">
+                    <h1>PANTAS</h1>
+                    <p>Driver Mitra • Zero Food Waste</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> <span>Kembali</span></button>
+                <div class="driver-badge" id="onlineStatusBadge"><i class="fas fa-truck-pickup"></i> Online</div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT - FULL WIDTH 3 COLUMN -->
+        <div class="main-content" id="mainContent">
+
+            <!-- DASHBOARD -->
+            <div id="dashboardTab" style="grid-column: 1 / -1; display: contents;">
+
+                <!-- Earnings Card - Full Width -->
+                <div class="card earnings-card card-full">
+                    <div class="balance-row">
+                        <div>
+                            <div class="balance-label">Saldo</div>
+                            <div class="balance-amount" id="balanceAmount">Rp275.000</div>
+                        </div>
+                        <button class="withdraw-btn" onclick="showTab('withdraw')">
+                            <i class="fas fa-arrow-down"></i> Tarik Saldo
+                        </button>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-badge">
+                            <div class="value" id="todayEarning">Rp0</div>
+                            <div class="label">Hari Ini</div>
+                        </div>
+                        <div class="stat-badge">
+                            <div class="value" id="thisWeekEarning">Rp0</div>
+                            <div class="label">Minggu Ini</div>
+                        </div>
+                        <div class="stat-badge">
+                            <div class="value" id="totalOrders">0</div>
+                            <div class="label">Total Order</div>
+                        </div>
+                        <div class="stat-badge">
+                            <div class="value" id="totalTips">Rp0</div>
+                            <div class="label">Tips</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rating Card -->
+                <div class="card">
+                    <div class="section-title">
+                        <i class="fas fa-star" style="color:#f6b83e;"></i> Rating Driver
+                        <span style="font-size:12px; color:#5a8f7a; font-weight:500;" id="totalRatingsCount">(2 ulasan)</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                        <span class="rating-average" id="driverRatingAvg">4.75</span>
+                        <span style="color:#5a8f7a; font-size:14px;">/5.0</span>
+                        <div class="rating-stars" id="driverRatingStars"></div>
+                    </div>
+                    <div id="recentRatingsList" style="margin-top: 10px;"></div>
+                </div>
+
+                <!-- Order Priority Card -->
+                <div class="card">
+                    <div class="surge-badge">
+                        <i class="fas fa-fire"></i> <span id="surgeText">Surge 1.2x</span>
+                        &nbsp;|&nbsp; <i class="fas fa-map-marker-alt"></i> <span id="zoneText">Surabaya Pusat</span>
+                    </div>
+                    <div class="section-title">
+                        📦 Order Prioritas
+                        <span id="vehicleOrderBadge" style="font-size:11px; font-weight:500; color:#5a8f7a;">(Pickup Besar/Hotel)</span>
+                    </div>
+                    <div id="incomingOrdersList"></div>
+                    <button class="btn-primary" onclick="openSimulationPopup()">
+                        <i class="fas fa-play-circle"></i> Simulasi Order (Hotel/Pickup) dengan Live Tracking
+                    </button>
+                </div>
+
+                <!-- Bonus Card -->
+                <div class="card">
+                    <div class="section-title">🏆 Bonus Progresif</div>
+                    <div id="bonusList"></div>
+                </div>
+
+                <!-- History Card - Full Width -->
+                <div class="card card-full">
+                    <div class="section-title">📋 Riwayat Order</div>
+                    <div id="historyOrdersList"></div>
+                </div>
+            </div>
+
+            <!-- WITHDRAW TAB -->
+            <div id="withdrawTab" class="hidden" style="grid-column: 1 / -1;">
+                <div class="card" style="max-width: 700px; margin: 0 auto;">
+                    <div class="section-title"><i class="fas fa-wallet"></i> Tarik Saldo</div>
+                    <div class="balance-row">
+                        <span class="balance-label">Saldo Tersedia:</span>
+                        <span class="balance-amount" id="withdrawBalance">Rp275.000</span>
+                    </div>
+                    <input type="number" id="withdrawAmount" class="form-input" placeholder="Jumlah tarik (min Rp10.000)">
+                    <select id="bankSelect" class="form-input">
+                        <option>BCA - 1234567890 (a.n Bintang)</option>
+                        <option>Mandiri - 9876543210 (a.n Bintang)</option>
+                        <option>GoPay Sendiri</option>
+                    </select>
+                    <div class="alert-info">
+                        <i class="fas fa-info-circle"></i> Biaya withdraw: Rp1.500 (gratis 3x pertama)
+                    </div>
+                    <button class="btn-primary" onclick="processWithdraw()">Konfirmasi Tarik</button>
+                    <div style="margin-top:20px;">
+                        <div class="section-title">📜 Riwayat Penarikan</div>
+                        <div id="withdrawList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROFILE TAB -->
+            <div id="profileTab" class="hidden" style="grid-column: 1 / -1;">
+                <div class="card" style="max-width: 500px; margin: 0 auto; text-align:center;">
+                    <i class="fas fa-user-circle" style="font-size:72px; color:#2d9b6e;"></i>
+                    <h3 style="margin:12px 0; font-size:22px; font-weight:700;" id="driverName">Bintang Permana</h3>
+                    <p style="color:#5a8f7a; font-size:13px;" id="vehicleTypeText">Driver Pickup Logistic</p>
+                    <div class="stats-grid" style="margin-top:12px;">
+                        <div class="stat-badge">
+                            <div class="value" id="profileRating">4.75</div>
+                            <div class="label">Rating</div>
+                        </div>
+                        <div class="stat-badge">
+                            <div class="value" id="completionRate">100%</div>
+                            <div class="label">Penyelesaian</div>
+                        </div>
+                        <div class="stat-badge">
+                            <div class="value" id="totalDeliveredProfile">0</div>
+                            <div class="label">Pengiriman</div>
+                        </div>
+                    </div>
+                    <button class="btn-primary btn-secondary" id="toggleOnlineBtn" onclick="toggleOnlineStatus(this)">
+                        <i class="fas fa-power-off"></i> Offline
+                    </button>
+                    <div style="margin-top:16px; padding-top:12px; border-top:1px solid #e2ede8;">
+                        <button class="btn-primary btn-secondary" onclick="goBack()">
+                            <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAV - Mobile Only -->
+        <div class="bottom-nav">
+            <button class="nav-item active" data-tab="dashboard">
+                <i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
+            </button>
+            <button class="nav-item" data-tab="withdraw">
+                <i class="fas fa-money-bill-wave"></i><span>Tarik Saldo</span>
+            </button>
+            <button class="nav-item" data-tab="profile">
+                <i class="fas fa-user"></i><span>Profil</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- SIMULATION MODAL -->
+    <div id="simulationModal" class="simulation-modal-overlay" style="display: none;">
+        <div class="simulation-modal">
+            <div class="simulation-header">
+                <i class="fas fa-location-dot" style="font-size:22px;"></i>
+                <h3>Live Delivery Simulation</h3>
+                <p id="simVehicleName" style="font-size:11px; opacity:0.9;">Kendaraan: Pickup - Hotel Logistic</p>
+            </div>
+            <div class="simulation-map">
+                <div class="map-grid-sim" id="simMapGrid">
+                    <div class="sim-vehicle" id="simVehicleIcon">🚛</div>
+                    <div class="sim-pin" style="left: 12%; top: 25%;" id="restoPinSim">🏪</div>
+                    <div class="sim-pin" style="left: 88%; top: 70%;" id="hotelPinSim">🏨</div>
+                </div>
+            </div>
+            <div class="progress-sim">
+                <div class="sim-status" id="simStatusText">📍 Menuju restoran untuk pickup...</div>
+                <div class="progress-bar-sim"><div class="progress-fill-sim" id="simProgressFill"></div></div>
+                <div class="sim-status" style="font-size:11px; color:#5a8f7a;" id="simDetailInfo">Estimasi sisa: 12 menit | Jarak: 3.2 km</div>
+            </div>
+            <div class="sim-footer">
+                <button class="btn-primary" id="simNextBtn" onclick="simulationNextStep()" style="margin:0;">Ambil Pesanan</button>
+                <button class="btn-primary btn-secondary" onclick="closeSimulationPopup()" style="margin:0;">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // ===== DATA & STATE =====
+        // ============================================================
+        let driverData = {
+            balance: 275000,
+            totalEarningToday: 0,
+            totalEarningWeek: 0,
+            totalOrders: 0,
+            totalTips: 0,
+            totalDelivered: 0,
+            ordersHistory: [],
+            withdrawals: []
+        };
+
+        let driverRatings = [
+            { rating: 5.0, comment: "Pickup rapi, tepat waktu ke hotel", customer: "GM Hotel Mulia", date: "2 jam lalu" },
+            { rating: 4.5, comment: "Pelayanan oke", customer: "Boulevard Hotel", date: "kemarin" }
+        ];
+
+        let dailyOrderCount = 0;
+        let weeklyWithdrawCount = 0;
+        let currentSurge = 1.2;
+        let currentZone = "Surabaya Pusat";
+        let isOnline = true;
+        let selectedVehicle = "pickup";
+        let currentTab = 'dashboard';
+
+        let bonusMilestones = [
+            { target: 3, bonus: 15000, achieved: false, desc: "Selesaikan 3 order → Bonus Rp15.000" },
+            { target: 7, bonus: 35000, achieved: false, desc: "7 order → Bonus Rp35.000" },
+            { target: 12, bonus: 70000, achieved: false, desc: "12 order → Bonus Rp70.000" }
+        ];
+
+        let simInterval = null;
+        let simProgress = 0;
+        let simStep = 0;
+        let currentOrderEarning = 0;
+        let toastTimeout = null;
+
+        // ============================================================
+        // ===== UTILITY FUNCTIONS =====
+        // ============================================================
+        function formatRupiah(amount) {
+            return 'Rp' + amount.toLocaleString('id-ID');
+        }
+
+        function showToast(msg, isError = false) {
+            let t = document.getElementById('toast');
+            if (toastTimeout) clearTimeout(toastTimeout);
+            t.classList.remove('show');
+            t.querySelector('span').innerText = msg;
+            t.style.background = isError ? '#b13a2b' : '#0d2f23';
+            void t.offsetWidth;
+            t.classList.add('show');
+            toastTimeout = setTimeout(() => { t.classList.remove('show');
+                toastTimeout = null; }, 2600);
+        }
+
+        function goBack() {
+            if (document.referrer && document.referrer !== '') {
+                window.history.back();
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // ============================================================
+        // ===== UPDATE UI =====
+        // ============================================================
+        function updateAllUI() {
+            document.getElementById('balanceAmount').innerText = formatRupiah(driverData.balance);
+            document.getElementById('withdrawBalance').innerText = formatRupiah(driverData.balance);
+            document.getElementById('todayEarning').innerText = formatRupiah(driverData.totalEarningToday);
+            document.getElementById('thisWeekEarning').innerText = formatRupiah(driverData.totalEarningWeek);
+            document.getElementById('totalOrders').innerText = driverData.totalOrders;
+            document.getElementById('totalTips').innerText = formatRupiah(driverData.totalTips);
+            document.getElementById('totalDeliveredProfile').innerText = driverData.totalDelivered;
+            document.getElementById('surgeText').innerHTML = `<i class="fas fa-charging-station"></i> Surge ${currentSurge}x`;
+            document.getElementById('zoneText').innerHTML = currentZone;
+
+            // Bonus
+            let bonusHtml = '';
+            bonusMilestones.forEach(m => {
+                let progress = Math.min(100, (dailyOrderCount / m.target) * 100);
+                bonusHtml += `
+                    <div class="bonus-item">
+                        <div style="flex:1;">
+                            <div>${m.desc}</div>
+                            <div class="progress-bar"><div class="progress-fill" style="width:${progress}%;"></div></div>
+                        </div>
+                        <div>${m.achieved ? '✓ Diklaim' : formatRupiah(m.bonus)}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('bonusList').innerHTML = bonusHtml;
+
+            // History Orders
+            if (driverData.ordersHistory.length === 0) {
+                document.getElementById('historyOrdersList').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-box-open"></i>
+                        Belum ada order. Klik Simulasi Order
+                    </div>
+                `;
+            } else {
+                document.getElementById('historyOrdersList').innerHTML = driverData.ordersHistory.slice(0, 8).map(o =>
+                    `<div class="order-item">
+                        <div class="order-header">
+                            <span class="order-merchant">🏨 ${o.hotel || 'Hotel'} • ${o.merchant}</span>
+                            <span class="order-earning">+${formatRupiah(o.fare+o.tip)}</span>
+                        </div>
+                        <div class="order-detail">
+                            <span><i class="fas fa-road"></i> ${o.distance} km</span>
+                            <span><i class="fas fa-clock"></i> ${o.time}</span>
+                            ${o.tip>0?`<span><i class="fas fa-star"></i> Tip ${formatRupiah(o.tip)}</span>`:''}
+                        </div>
+                        <div><span class="order-status">Selesai (${o.type})</span></div>
+                    </div>`
+                ).join('');
+            }
+
+            // Incoming Orders
+            document.getElementById('incomingOrdersList').innerHTML = `
+                <div class="empty-state" style="padding:16px;">
+                    <i class="fas fa-truck-pickup" style="font-size:32px; color:#2d9b6e;"></i>
+                    <p style="margin-top:8px;">Klik tombol "Simulasi Order" untuk demo live tracking</p>
+                    <p style="font-size:11px; color:#5a8f7a;">Pengiriman ke hotel & logistik</p>
+                </div>
+            `;
+
+            let vehicleBadge = selectedVehicle === 'pickup' ? '(Pickup Besar/Hotel)' : '(Motor/Pesanan Kecil)';
+            document.getElementById('vehicleOrderBadge').innerHTML = vehicleBadge;
+            document.getElementById('vehicleTypeText').innerHTML = selectedVehicle === 'pickup' ?
+                'Driver Pickup (Hotel/Logistik)' : 'Driver Roda Dua';
+            document.getElementById('completionRate').innerHTML = '100%';
+        }
+
+        // ============================================================
+        // ===== RATING =====
+        // ============================================================
+        function renderDriverRating() {
+            let avg = driverRatings.reduce((a, r) => a + r.rating, 0) / driverRatings.length;
+            document.getElementById('driverRatingAvg').innerText = avg.toFixed(2);
+            document.getElementById('profileRating').innerText = avg.toFixed(2);
+
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += i <= Math.floor(avg) ?
+                    '<i class="fas fa-star" style="color:#f6b83e;"></i>' :
+                    '<i class="far fa-star" style="color:#d0dce6;"></i>';
+            }
+            document.getElementById('driverRatingStars').innerHTML = stars;
+            document.getElementById('totalRatingsCount').innerHTML = `(${driverRatings.length} ulasan)`;
+
+            document.getElementById('recentRatingsList').innerHTML = driverRatings.slice(0, 3).map(r =>
+                `<div class="rating-item">
+                    <span class="customer">${r.customer}</span> ★${r.rating.toFixed(1)} 
+                    <span class="comment">"${r.comment}"</span>
+                    <span style="font-size:9px; color:#8ab0a0; float:right;">${r.date}</span>
+                </div>`
+            ).join('');
+        }
+
+        // ============================================================
+        // ===== WITHDRAW =====
+        // ============================================================
+        function processWithdraw() {
+            let amount = parseInt(document.getElementById('withdrawAmount').value);
+            if (isNaN(amount) || amount < 10000) { showToast("Minimal penarikan Rp10.000", true); return; }
+            if (amount > driverData.balance) { showToast("Saldo tidak cukup", true); return; }
+
+            let fee = weeklyWithdrawCount >= 3 ? 1500 : 0;
+            driverData.balance -= (amount + fee);
+            weeklyWithdrawCount++;
+            driverData.withdrawals.unshift({
+                amount: amount,
+                fee: fee,
+                date: new Date().toLocaleString(),
+                bank: document.getElementById('bankSelect').value
+            });
+
+            updateAllUI();
+            renderWithdrawHistory();
+            showToast(`Tarik ${formatRupiah(amount)} berhasil`);
+            document.getElementById('withdrawAmount').value = '';
+        }
+
+        function renderWithdrawHistory() {
+            let c = document.getElementById('withdrawList');
+            if (driverData.withdrawals.length === 0) {
+                c.innerHTML = '<div class="empty-state">Belum ada riwayat penarikan</div>';
+            } else {
+                c.innerHTML = driverData.withdrawals.slice(0, 5).map(w =>
+                    `<div class="bonus-item" style="font-size:11px;">
+                        ${w.date} - ${formatRupiah(w.amount)} ${w.fee?`(fee ${formatRupiah(w.fee)})`:''}
+                    </div>`
+                ).join('');
+            }
+        }
+
+        // ============================================================
+        // ===== ONLINE STATUS =====
+        // ============================================================
+        function toggleOnlineStatus(btn) {
+            isOnline = !isOnline;
+            btn.innerHTML = isOnline ? '<i class="fas fa-power-off"></i> Offline' : '<i class="fas fa-power-off"></i> Online';
+            document.getElementById('onlineStatusBadge').innerHTML = isOnline ?
+                '<i class="fas fa-truck-pickup"></i> Online' :
+                '<i class="fas fa-truck-pickup"></i> Offline';
+            showToast(isOnline ? "Online, siap antar ke hotel" : "Offline");
+        }
+
+        // ============================================================
+        // ===== TAB NAVIGATION =====
+        // ============================================================
+        function showTab(tabId) {
+            currentTab = tabId;
+            
+            document.getElementById('dashboardTab').style.display = 'none';
+            document.getElementById('withdrawTab').classList.add('hidden');
+            document.getElementById('profileTab').classList.add('hidden');
+            
+            if (tabId === 'dashboard') {
+                document.getElementById('dashboardTab').style.display = 'contents';
+            } else if (tabId === 'withdraw') {
+                document.getElementById('withdrawTab').classList.remove('hidden');
+                document.getElementById('withdrawTab').style.display = 'block';
+                renderWithdrawHistory();
+            } else if (tabId === 'profile') {
+                document.getElementById('profileTab').classList.remove('hidden');
+                document.getElementById('profileTab').style.display = 'block';
+            }
+
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tabId);
+            });
+        }
+
+        // ============================================================
+        // ===== VEHICLE SELECTOR =====
+        // ============================================================
+        function selectVehicleType(type) {
+            selectedVehicle = type;
+            document.querySelectorAll('.vehicle-option').forEach(opt => {
+                opt.classList.remove('selected');
+                let radio = opt.querySelector('input');
+                if (radio) radio.checked = (opt.dataset.vehicle === type);
+                if (opt.dataset.vehicle === type) opt.classList.add('selected');
+            });
+            updateDynamicSpec();
+            updateAllUI();
+        }
+
+        function updateDynamicSpec() {
+            const specList = document.getElementById('dynamicSpecList');
+            if (selectedVehicle === 'pickup') {
+                specList.innerHTML = `
+                    <li><i class="fas fa-truck-pickup"></i> Kapasitas muatan > 300 kg, cocok untuk katering hotel</li>
+                    <li><i class="fas fa-temperature-low"></i> Wajib box pendingin untuk makanan basah</li>
+                    <li><i class="fas fa-hotel"></i> Prioritas pengiriman ke hotel bintang 3-5</li>
+                    <li><i class="fas fa-id-card"></i> SIM A aktif & STNK pickup</li>
+                `;
+            } else {
+                specList.innerHTML = `
+                    <li><i class="fas fa-motorcycle"></i> Kapasitas maksimal 15kg, ideal untuk pesanan kecil</li>
+                    <li><i class="fas fa-shopping-bag"></i> Tas carrier kedap air wajib</li>
+                    <li><i class="fas fa-city"></i> Area prioritas: perkantoran, rumah tangga</li>
+                    <li><i class="fas fa-id-card"></i> SIM C & kelengkapan berkendara</li>
+                `;
+            }
+        }
+
+        // ============================================================
+        // ===== SIMULATION =====
+        // ============================================================
+        function openSimulationPopup() {
+            if (!isOnline) { showToast("Offline, aktifkan online dulu", true); return; }
+
+            const modal = document.getElementById('simulationModal');
+            const vehicleIcon = document.getElementById('simVehicleIcon');
+            const vehicleNameSpan = document.getElementById('simVehicleName');
+
+            if (selectedVehicle === 'pickup') {
+                vehicleIcon.innerHTML = '🚛';
+                vehicleNameSpan.innerHTML = 'Kendaraan: Pickup - Hotel Logistic (Muatan Besar)';
+            } else {
+                vehicleIcon.innerHTML = '🏍️';
+                vehicleNameSpan.innerHTML = 'Kendaraan: Motor - Pengiriman Cepat (Pesanan Kecil)';
+            }
+
+            if (simInterval) clearInterval(simInterval);
+            simProgress = 0;
+            simStep = 0;
+            document.getElementById('simProgressFill').style.width = '0%';
+            document.getElementById('simStatusText').innerHTML = '📍 Menuju restoran untuk pickup...';
+            document.getElementById('simDetailInfo').innerHTML = 'Estimasi sisa: 8-12 menit | Jarak: 2.8 km';
+            document.getElementById('simNextBtn').innerHTML = 'Ambil Pesanan';
+            document.getElementById('simNextBtn').disabled = false;
+
+            const vehicleDiv = document.getElementById('simVehicleIcon');
+            vehicleDiv.style.left = '5%';
+            vehicleDiv.style.top = '15%';
+
+            let baseEarn = selectedVehicle === 'pickup' ? 22000 : 11000;
+            currentOrderEarning = Math.floor(baseEarn * currentSurge) + (Math.random() > 0.6 ? 5000 : 0);
+
+            modal.style.display = 'flex';
+        }
+
+        function closeSimulationPopup() {
+            if (simInterval) { clearInterval(simInterval);
+                simInterval = null; }
+            document.getElementById('simulationModal').style.display = 'none';
+        }
+
+        function simulationNextStep() {
+            if (simStep === 0) {
+                if (simInterval) clearInterval(simInterval);
+                simProgress = 0;
+                simStep = 1;
+                document.getElementById('simStatusText').innerHTML = '🚚 Menuju restoran (pickup)';
+                document.getElementById('simNextBtn').innerHTML = 'Memuat...';
+                document.getElementById('simNextBtn').disabled = true;
+
+                simInterval = setInterval(() => {
+                    if (simProgress >= 40) {
+                        clearInterval(simInterval);
+                        simInterval = null;
+                        document.getElementById('simProgressFill').style.width = '40%';
+                        document.getElementById('simStatusText').innerHTML = '✅ Pesanan telah diambil! Sekarang menuju ke hotel / tujuan.';
+                        document.getElementById('simDetailInfo').innerHTML = 'Estimasi sampai: 10 menit | Jarak 3.5 km';
+                        document.getElementById('simNextBtn').innerHTML = 'Selesaikan Pengiriman';
+                        document.getElementById('simNextBtn').disabled = false;
+                        simStep = 2;
+                        const vehicle = document.getElementById('simVehicleIcon');
+                        vehicle.style.left = '12%';
+                        vehicle.style.top = '25%';
+                        return;
+                    }
+                    simProgress += 2;
+                    document.getElementById('simProgressFill').style.width = simProgress + '%';
+                    let progressRatio = simProgress / 40;
+                    let currX = 5 + (7 * progressRatio);
+                    let currY = 15 + (10 * progressRatio);
+                    document.getElementById('simVehicleIcon').style.left = Math.min(12, currX) + '%';
+                    document.getElementById('simVehicleIcon').style.top = Math.min(25, currY) + '%';
+                }, 60);
+            } else if (simStep === 2) {
+                if (simInterval) clearInterval(simInterval);
+                let progressVal = 40;
+                document.getElementById('simStatusText').innerHTML = '🏨 Mengantar ke hotel/tujuan...';
+                document.getElementById('simNextBtn').innerHTML = 'Mengirim...';
+                document.getElementById('simNextBtn').disabled = true;
+
+                simInterval = setInterval(() => {
+                    if (progressVal >= 100) {
+                        clearInterval(simInterval);
+                        simInterval = null;
+                        document.getElementById('simProgressFill').style.width = '100%';
+                        document.getElementById('simStatusText').innerHTML = '✅ Pesanan sampai! Pengiriman selesai.';
+                        document.getElementById('simDetailInfo').innerHTML = `Earning: +${formatRupiah(currentOrderEarning)} (termasuk surge & tips)`;
+                        document.getElementById('simNextBtn').innerHTML = 'Selesai';
+                        document.getElementById('simNextBtn').disabled = false;
+                        simStep = 3;
+                        completeDeliveryFromSim(currentOrderEarning);
+                        return;
+                    }
+                    progressVal += 1.8;
+                    document.getElementById('simProgressFill').style.width = progressVal + '%';
+                    let t = (progressVal - 40) / 60;
+                    let currX = 12 + (76 * t);
+                    let currY = 25 + (45 * t);
+                    document.getElementById('simVehicleIcon').style.left = Math.min(88, currX) + '%';
+                    document.getElementById('simVehicleIcon').style.top = Math.min(70, currY) + '%';
+                }, 50);
+            } else if (simStep === 3) {
+                closeSimulationPopup();
+                showToast("Pengiriman berhasil! +" + formatRupiah(currentOrderEarning));
+            }
+        }
+
+        function completeDeliveryFromSim(earning) {
+            let tipAmount = earning > 20000 ? Math.floor(Math.random() * 8000) : (Math.random() > 0.7 ? 3000 : 0);
+            let totalWithTip = earning + tipAmount;
+
+            driverData.balance += totalWithTip;
+            driverData.totalEarningToday += totalWithTip;
+            driverData.totalEarningWeek += totalWithTip;
+            driverData.totalOrders += 1;
+            driverData.totalTips += tipAmount;
+            driverData.totalDelivered += 1;
+
+            let hotelDest = selectedVehicle === 'pickup' ? "Grand Mulia Hotel" : "Royal Oriental Hotel";
+            let merchantName = selectedVehicle === 'pickup' ? "Central Catering" : "Warung Makan Cepat";
+            let orderType = selectedVehicle === 'pickup' ? "Pickup (Besar/Hotel)" : "Motor (Kecil)";
+
+            let newOrder = {
+                id: Date.now(),
+                merchant: merchantName,
+                hotel: hotelDest,
+                distance: (Math.random() * 5 + 2).toFixed(1),
+                fare: earning,
+                tip: tipAmount,
+                status: 'selesai',
+                time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                type: orderType
+            };
+
+            driverData.ordersHistory.unshift(newOrder);
+            dailyOrderCount++;
+
+            bonusMilestones.forEach(m => {
+                if (!m.achieved && dailyOrderCount >= m.target) {
+                    m.achieved = true;
+                    driverData.balance += m.bonus;
+                    driverData.totalEarningToday += m.bonus;
+                    driverData.totalEarningWeek += m.bonus;
+                    showToast(`🎉 Bonus ${formatRupiah(m.bonus)} klaim!`);
+                }
+            });
+
+            if (Math.random() > 0.7) {
+                currentSurge = +(Math.random() * 1.2 + 0.9).toFixed(1);
+                currentSurge = Math.min(2.2, currentSurge);
+            }
+
+            let newRating = 4 + Math.random() * 1;
+            let comments = ["Pengiriman cepat, live tracking akurat", "Driver profesional", "Barang sampai dengan selamat"];
+            driverRatings.unshift({
+                rating: newRating,
+                comment: comments[Math.floor(Math.random() * comments.length)],
+                customer: hotelDest,
+                date: "baru saja"
+            });
+            if (driverRatings.length > 20) driverRatings.pop();
+
+            updateAllUI();
+            renderDriverRating();
+        }
+
+        // ============================================================
+        // ===== CONSENT =====
+        // ============================================================
+        function setupConsent() {
+            const agreePrivacy = document.getElementById('agreePrivacy');
+            const agreeSpec = document.getElementById('agreeSpec');
+            const agreeTerms = document.getElementById('agreeTerms');
+            const confirmBtn = document.getElementById('confirmConsentBtn');
+            const modal = document.getElementById('consentModal');
+            const appContainer = document.getElementById('appContainer');
+
+            function checkAll() {
+                confirmBtn.disabled = !(agreePrivacy.checked && agreeSpec.checked && agreeTerms.checked);
+            }
+
+            agreePrivacy.addEventListener('change', checkAll);
+            agreeSpec.addEventListener('change', checkAll);
+            agreeTerms.addEventListener('change', checkAll);
+
+            confirmBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+                appContainer.style.display = 'flex';
+                updateAllUI();
+                renderDriverRating();
+                showToast("Selamat datang! Klik Simulasi Order untuk demo live tracking");
+            });
+
+            updateDynamicSpec();
+            checkAll();
+        }
+
+        // ============================================================
+        // ===== NAV ITEMS (Mobile) =====
+        // ============================================================
+        document.querySelectorAll('.nav-item').forEach(btn => {
+            btn.addEventListener('click', () => showTab(btn.dataset.tab));
+        });
+
+        // ============================================================
+        // ===== INIT =====
+        // ============================================================
+        setupConsent();
+        showTab('dashboard');
+        updateAllUI();
+        renderDriverRating();
+
+        console.log('🚛 PANTAS Driver Dashboard loaded!');
+        console.log('📌 Full width responsive layout - tanpa space di kanan/kiri');
+        console.log('📌 Consent modal lebih besar dan informatif');
+    </script>
+</body>
+</html>
