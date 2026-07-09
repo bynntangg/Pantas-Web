@@ -5,7 +5,7 @@ const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
 app.use(cors({
-  origin: ['https://pantas-apps.vercel.app', 'http://localhost:3000'],
+  origin: ['https://pantas-web.vercel.app/', 'http://localhost:3000'],
   credentials: true
 }));
 app.use(express.json());
