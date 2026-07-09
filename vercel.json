@@ -1,20 +1,22 @@
 {
-  "outputDirectory": "public",
+  "version": 2,
+  "functions": {
+    "api/index.php": {
+      "runtime": "vercel-php@0.7.1"
+    }
+  },
   "routes": [
     {
-      "src": "/",
-      "dest": "/index.html"
+      "src": "/api/(.*)",
+      "dest": "/api/index.php"
+    },
+    {
+      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
+      "dest": "/public/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/$1"
+      "dest": "/public/index.html"
     }
-  ],
-  "env": {
-    "APP_ENV": "production",
-    "APP_DEBUG": "false",
-    "CACHE_DRIVER": "array",
-    "SESSION_DRIVER": "array",
-    "LOG_CHANNEL": "stderr"
-  }
+  ]
 }
