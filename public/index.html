@@ -2245,7 +2245,9 @@
   // ================================================================
   // ===== KONFIGURASI API =====
   // ================================================================
-  const API_URL = 'https://pantas-apps.vercel.app/api';
+  const API_URL = window.location.hostname === 'localhost' 
+  ? 'http://127.0.0.1:8000/api' 
+  : 'https://pantas-web.vercel.app/api';
 
   // ================================================================
   // ===== DATABASE (localStorage) =====
