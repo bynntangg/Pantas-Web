@@ -1,20 +1,15 @@
 {
-  "outputDirectory": "public",
-  "routes": [
+  "version": 2,
+  "builds": [
     {
-      "src": "/",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "src": "api/index.js",
+      "use": "@vercel/node"
     }
   ],
-  "env": {
-    "APP_ENV": "production",
-    "APP_DEBUG": "false",
-    "CACHE_DRIVER": "array",
-    "SESSION_DRIVER": "array",
-    "LOG_CHANNEL": "stderr"
-  }
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
+    }
+  ]
 }
