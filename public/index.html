@@ -15,9 +15,8 @@
   
   <!-- Chart.js untuk grafik -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
-  <style>
+  <style>z
     /* ===== RESET ===== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -2198,30 +2197,10 @@
 
 <script>
   // ================================================================
-  // ===== SUPABASE CONFIGURATION =====
-  // ================================================================
-  // ⚠️ GANTI DENGAN CREDENTIALS SUPABASE ANDA ⚠️
-    const SUPABASE_URL = 'https://krgnajnezqbzrbglmecf.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyZ25ham5lenFienJiZ2xtZWNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyMjIwNDcsImV4cCI6MjA5ODc5ODA0N30.7HKonrJMyyOgnykeolT1i9ECZ8p29KV86eAiPgLtWBA';
-
-  // Inisialisasi Supabase Client
-  let supabase;
-  try {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log('✅ Supabase client initialized');
-  } catch (e) {
-    console.error('❌ Failed to initialize Supabase:', e);
-  }
-
-  // ================================================================
   // ===== TOAST NOTIFICATION =====
   // ================================================================
   function showToast(message, type = 'success', duration = 4000) {
     const container = document.getElementById('toastContainer');
-    if (!container) {
-      console.warn('Toast container not found');
-      return;
-    }
     const icons = {
       success: 'fa-check-circle',
       error: 'fa-exclamation-circle',
@@ -2248,13 +2227,11 @@
   let pendingLogout = null;
 
   function showModal() {
-    const modal = document.getElementById('modalConfirm');
-    if (modal) modal.classList.add('show');
+    document.getElementById('modalConfirm').classList.add('show');
   }
 
   function closeModal() {
-    const modal = document.getElementById('modalConfirm');
-    if (modal) modal.classList.remove('show');
+    document.getElementById('modalConfirm').classList.remove('show');
   }
 
   function confirmLogout() {
@@ -2266,48 +2243,29 @@
   }
 
   // ================================================================
+  // ===== KONFIGURASI API =====
+  // ================================================================
+  const API_URL = 'http://127.0.0.1:8000/api';
+
+  // ================================================================
   // ===== DATABASE (localStorage) =====
   // ================================================================
   const DB = {
-    getToken: function() { 
-      try { return localStorage.getItem('pantas_token'); } 
-      catch (e) { return null; }
-    },
-    setToken: function(token) { 
-      try { localStorage.setItem('pantas_token', token); } 
-      catch (e) { console.warn('Failed to set token:', e); }
-    },
+    getToken: function() { return localStorage.getItem('pantas_token'); },
+    setToken: function(token) { localStorage.setItem('pantas_token', token); },
     getUser: function() {
-      try { 
-        const data = localStorage.getItem('pantas_user');
-        return data ? JSON.parse(data) : null;
-      } catch { return null; }
+      try { return JSON.parse(localStorage.getItem('pantas_user')); } catch { return null; }
     },
-    setUser: function(user) { 
-      try { localStorage.setItem('pantas_user', JSON.stringify(user)); } 
-      catch (e) { console.warn('Failed to set user:', e); }
-    },
-    getRole: function() { 
-      try { return localStorage.getItem('pantas_role'); } 
-      catch (e) { return null; }
-    },
-    setRole: function(role) { 
-      try { localStorage.setItem('pantas_role', role); } 
-      catch (e) { console.warn('Failed to set role:', e); }
-    },
+    setUser: function(user) { localStorage.setItem('pantas_user', JSON.stringify(user)); },
+    getRole: function() { return localStorage.getItem('pantas_role'); },
+    setRole: function(role) { localStorage.setItem('pantas_role', role); },
     logout: function() {
-      try {
-        localStorage.removeItem('pantas_token');
-        localStorage.removeItem('pantas_user');
-        localStorage.removeItem('pantas_role');
-        updateNavbar();
-      } catch (e) {
-        console.warn('Logout error:', e);
-      }
+      localStorage.removeItem('pantas_token');
+      localStorage.removeItem('pantas_user');
+      localStorage.removeItem('pantas_role');
+      updateNavbar();
     },
-    isLoggedIn: function() { 
-      return !!this.getToken(); 
-    }
+    isLoggedIn: function() { return !!this.getToken(); }
   };
 
   // ================================================================
@@ -2342,8 +2300,8 @@
     const label = document.getElementById('selectedRoleLabel');
     if (label) label.textContent = ROLE_LABELS[role] || 'Customer';
     
-    const warning = document.getElementById('roleWarning');
-    if (warning) warning.style.display = 'none';
+    // Sembunyikan warning saat role dipilih
+    document.getElementById('roleWarning').style.display = 'none';
   }
 
   function selectRoleRegister(role) {
@@ -2359,8 +2317,6 @@
   // ================================================================
   function updateNavbar() {
     const navButtons = document.getElementById('navButtons');
-    if (!navButtons) return;
-    
     const token = DB.getToken();
     const user = DB.getUser();
     const role = DB.getRole();
@@ -2432,9 +2388,7 @@
   // ================================================================
   function togglePass(id) {
     const input = document.getElementById(id);
-    if (!input) return;
-    const btn = input.parentElement?.querySelector('.toggle-pass');
-    if (!btn) return;
+    const btn = input.parentElement.querySelector('.toggle-pass');
     if (input.type === 'password') {
       input.type = 'text';
       btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
@@ -2445,96 +2399,31 @@
   }
 
   // ================================================================
-  // ===== SPLASH SCREEN & LANDING PAGE =====
+  // ===== SPLASH SCREEN =====
   // ================================================================
   (function() {
     const splash = document.getElementById('splash');
     const main = document.getElementById('main-content');
-    
-    console.log('🔄 Splash screen initializing...');
-
-    // Fungsi untuk menampilkan landing page
-    function showLandingPage() {
-      console.log('✅ Showing landing page...');
-      
-      // Pastikan page-landing aktif
-      const landingPage = document.getElementById('page-landing');
-      if (landingPage) {
-        landingPage.classList.add('active');
-      }
-      
-      // Tampilkan main content
-      if (main) {
-        main.classList.add('visible');
-      }
-      
-      // Sembunyikan splash
-      if (splash) {
-        splash.classList.add('hide');
-        setTimeout(() => {
-          splash.style.display = 'none';
-        }, 400);
-      }
-      
-      // Update navbar
-      updateNavbar();
-      
-      // Inisialisasi charts setelah delay
-      setTimeout(initCharts, 500);
-      
-      // Animate counters
-      document.querySelectorAll('.pct').forEach(el => {
-        const text = el.textContent;
-        el.textContent = '0%';
-        const target = parseInt(text);
-        let current = 0;
-        const step = target / 40;
-        const interval = setInterval(() => {
-          current += step;
-          if (current >= target) { current = target; clearInterval(interval); }
-          el.textContent = Math.round(current) + '%';
-        }, 30);
-      });
-    }
-
-    // Emergency fallback - force show landing page after 6 seconds
-    const emergencyTimer = setTimeout(() => {
-      console.warn('⚠️ Emergency: Forcing landing page display!');
-      showLandingPage();
-    }, 6000);
-
-    // Cek session aktif
-    const token = DB.getToken();
-    const user = DB.getUser();
-    
-    if (token && user && user.name) {
-      // Jika sudah login, redirect ke dashboard sesuai role
-      const role = DB.getRole();
-      const rolePages = {
-        'customer': '/customer.html',
-        'horeka': '/horeka.html',
-        'driver': '/driver.html'
-      };
-      
-      if (rolePages[role]) {
-        console.log(`🔄 Redirecting to ${rolePages[role]}...`);
-        setTimeout(() => {
-          try {
-            window.location.href = rolePages[role];
-            clearTimeout(emergencyTimer);
-          } catch (e) {
-            console.warn('Redirect failed, showing landing page:', e);
-            showLandingPage();
-          }
-        }, 1500);
-        return;
-      }
-    }
-    
-    // Default: tampilkan landing page setelah loading
     setTimeout(() => {
-      showLandingPage();
-      clearTimeout(emergencyTimer);
+      splash.classList.add('hide');
+      setTimeout(() => {
+        main.classList.add('visible');
+        splash.style.display = 'none';
+        updateNavbar();
+        setTimeout(initCharts, 500);
+        document.querySelectorAll('.pct').forEach(el => {
+          const text = el.textContent;
+          el.textContent = '0%';
+          const target = parseInt(text);
+          let current = 0;
+          const step = target / 40;
+          const interval = setInterval(() => {
+            current += step;
+            if (current >= target) { current = target; clearInterval(interval); }
+            el.textContent = Math.round(current) + '%';
+          }, 30);
+        });
+      }, 400);
     }, 2800);
   })();
 
@@ -2542,51 +2431,46 @@
   // ===== CHARTS =====
   // ================================================================
   function initCharts() {
-    try {
-      const ctx1 = document.getElementById('carbonChart');
-      if (ctx1) {
-        new Chart(ctx1, {
-          type: 'bar',
-          data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
-            datasets: [{
-              label: 'CO₂ Reduction (t)',
-              data: [2.1, 3.4, 4.8, 3.9, 6.2, 8.2, 5.7, 7.4],
-              backgroundColor: ['rgba(34,197,94,0.7)', 'rgba(34,197,94,0.7)', 'rgba(34,197,94,0.7)', 'rgba(34,197,94,0.7)', 'rgba(34,197,94,0.7)', 'rgba(34,197,94,0.9)', 'rgba(34,197,94,0.7)', 'rgba(34,197,94,0.9)'],
-              borderColor: '#22C55E',
-              borderWidth: 2,
-              borderRadius: 8,
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } }, x: { grid: { display: false } } }
+    const ctx1 = document.getElementById('carbonChart');
+    if (ctx1) {
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+          datasets: [{
+            label: 'CO₂ Reduction (t)',
+            data: [2.1, 3.4, 4.8, 3.9, 6.2, 8.2, 5.7, 7.4],
+            backgroundColor: ['rgba(34,197,94,0.7)', 'rgba(34,197,94,0.7)', 'rgba(34,197,94,0.7)', 'rgba(34,197,94,0.7)', 'rgba(34,197,94,0.7)', 'rgba(34,197,94,0.9)', 'rgba(34,197,94,0.7)', 'rgba(34,197,94,0.9)'],
+            borderColor: '#22C55E',
+            borderWidth: 2,
+            borderRadius: 8,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } }, x: { grid: { display: false } } }
+        }
+      });
+    }
+    const ctx2 = document.getElementById('donutChart');
+    if (ctx2) {
+      new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+          labels: ['Food Rescue', 'Waste Recycled', 'ESG Target'],
+          datasets: [{ data: [72, 58, 43], backgroundColor: ['#22C55E', '#10B981', '#F59E0B'], borderWidth: 0 }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '65%',
+          plugins: {
+            legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true, pointStyle: 'circle' } }
           }
-        });
-      }
-      const ctx2 = document.getElementById('donutChart');
-      if (ctx2) {
-        new Chart(ctx2, {
-          type: 'doughnut',
-          data: {
-            labels: ['Food Rescue', 'Waste Recycled', 'ESG Target'],
-            datasets: [{ data: [72, 58, 43], backgroundColor: ['#22C55E', '#10B981', '#F59E0B'], borderWidth: 0 }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: '65%',
-            plugins: {
-              legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true, pointStyle: 'circle' } }
-            }
-          }
-        });
-      }
-      console.log('✅ Charts initialized');
-    } catch (e) {
-      console.warn('⚠️ Charts initialization warning:', e.message);
+        }
+      });
     }
   }
 
@@ -2612,9 +2496,91 @@
   });
 
   // ================================================================
-  // ===== AUTH HANDLERS DENGAN SUPABASE =====
+  // ===== AUTH HANDLERS =====
   // ================================================================
   
+  // ===== LOGIN =====
+  async function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPass').value;
+    const btn = document.querySelector('#page-login .auth-btn');
+    const originalText = btn.innerHTML;
+    const roleWarning = document.getElementById('roleWarning');
+    const roleWarningText = document.getElementById('roleWarningText');
+    
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+    btn.disabled = true;
+    roleWarning.style.display = 'none';
+    
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await response.json();
+      
+      if (response.ok && data.success) {
+        // VALIDASI ROLE: Cek apakah role yang dipilih sesuai dengan role akun
+        const userRole = data.role;
+        const selectedRole = document.querySelector('#roleSelector .role-option.active')?.dataset.role || 'customer';
+        
+        if (userRole !== selectedRole) {
+          // Role tidak sesuai - tampilkan peringatan
+          roleWarningText.textContent = `Akun ini terdaftar sebagai "${ROLE_LABELS[userRole] || userRole}", bukan "${ROLE_LABELS[selectedRole] || selectedRole}". Silakan pilih role yang sesuai atau gunakan akun lain.`;
+          roleWarning.style.display = 'block';
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+          showToast(`❌ Role tidak sesuai! Akun ini adalah ${ROLE_LABELS[userRole] || userRole}`, 'error');
+          return;
+        }
+        
+        // Role sesuai - lanjutkan login
+        DB.setToken(data.token);
+        DB.setUser(data.user);
+        DB.setRole(data.role);
+        updateNavbar();
+        showToast(`✅ ${data.message} Welcome ${data.user.name}!`, 'success');
+        
+        // Redirect berdasarkan role
+        const role = data.role;
+        setTimeout(() => {
+          navigateTo('redirect');
+          const msg = document.getElementById('redirectMessage');
+          
+          if (role === 'customer') {
+            msg.textContent = 'Anda akan diarahkan ke Dashboard Customer...';
+            setTimeout(() => {
+              window.location.href = '/customer.html';
+            }, 1500);
+          } else if (role === 'horeka') {
+            msg.textContent = 'Anda akan diarahkan ke Dashboard Mitra HOREKA...';
+            setTimeout(() => {
+              window.location.href = '/horeka.html';
+            }, 1500);
+          } else if (role === 'driver') {
+            msg.textContent = 'Anda akan diarahkan ke Dashboard Mitra Driver...';
+            setTimeout(() => {
+              window.location.href = '/driver.html';
+            }, 1500);
+          } else {
+            navigateTo('landing');
+          }
+        }, 800);
+        
+      } else {
+        showToast(`❌ Login failed: ${data.message || 'Invalid credentials'}`, 'error');
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    } catch (error) {
+      showToast(`❌ Connection error: ${error.message}`, 'error');
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }
+  }
+
   // ===== REGISTER =====
   async function handleRegister(e) {
     e.preventDefault();
@@ -2622,192 +2588,30 @@
     const email = document.getElementById('regEmail').value.trim();
     const password = document.getElementById('registerPass').value;
     const confirm = document.getElementById('confirmPass').value;
-    
-    if (!name || !email || !password) {
-      showToast('❌ Semua field harus diisi!', 'error');
-      return;
-    }
-    if (password !== confirm) { 
-      showToast('❌ Passwords do not match!', 'error'); 
-      return; 
-    }
-    if (password.length < 8) { 
-      showToast('❌ Password must be at least 8 characters!', 'error'); 
-      return; 
-    }
-    
+    if (password !== confirm) { showToast('❌ Passwords do not match!', 'error'); return; }
+    if (password.length < 8) { showToast('❌ Password must be at least 8 characters!', 'error'); return; }
     const btn = document.querySelector('#page-register .auth-btn');
-    if (!btn) return;
     const originalText = btn.innerHTML;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
     btn.disabled = true;
-    
     try {
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: email,
-        password: password,
-        options: {
-          data: {
-            name: name,
-            role: selectedRoleRegister
-          }
-        }
+      const response = await fetch(`${API_URL}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ name, email, password, password_confirmation: confirm, role: selectedRoleRegister })
       });
-
-      if (authError) {
-        let errorMsg = authError.message;
-        if (errorMsg.includes('User already registered')) {
-          errorMsg = 'Email sudah terdaftar. Silakan login!';
-        }
-        showToast(`❌ ${errorMsg}`, 'error');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
-      }
-
-      if (!authData.user) {
-        showToast('❌ Gagal membuat akun. Silakan coba lagi.', 'error');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
-      }
-
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('auth_id', authData.user.id)
-        .single();
-
-      if (userError) {
-        showToast(`✅ Akun berhasil dibuat! Silakan login.`, 'success');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
+      const data = await response.json();
+      if (response.ok && data.success) {
+        showToast(`🎉 ${data.message} Welcome ${data.user.name}!`, 'success');
         setTimeout(() => navigateTo('login'), 1500);
-        return;
+      } else {
+        let errorMsg = data.message || 'Registration failed';
+        if (data.errors) { const errors = Object.values(data.errors).flat(); errorMsg = errors.join('\n'); }
+        showToast(`❌ Registration failed: ${errorMsg}`, 'error');
       }
-
-      showToast(`🎉 Registration successful! Welcome ${userData.name}!`, 'success');
-      btn.innerHTML = originalText;
-      btn.disabled = false;
-      setTimeout(() => navigateTo('login'), 1500);
-
     } catch (error) {
-      console.error('Registration error:', error);
       showToast(`❌ Connection error: ${error.message}`, 'error');
-      btn.innerHTML = originalText;
-      btn.disabled = false;
-    }
-  }
-
-  // ===== LOGIN =====
-  async function handleLogin(e) {
-    e.preventDefault();
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPass').value;
-    const btn = document.querySelector('#page-login .auth-btn');
-    if (!btn) return;
-    const originalText = btn.innerHTML;
-    const roleWarning = document.getElementById('roleWarning');
-    const roleWarningText = document.getElementById('roleWarningText');
-    
-    if (!email || !password) {
-      showToast('❌ Email dan password harus diisi!', 'error');
-      return;
-    }
-    
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-    btn.disabled = true;
-    if (roleWarning) roleWarning.style.display = 'none';
-    
-    try {
-      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
-
-      if (authError) {
-        let errorMsg = authError.message;
-        if (errorMsg.includes('Invalid login credentials')) {
-          errorMsg = 'Email atau password salah!';
-        } else if (errorMsg.includes('Email not confirmed')) {
-          errorMsg = 'Email belum dikonfirmasi. Cek inbox Anda!';
-        }
-        showToast(`❌ ${errorMsg}`, 'error');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
-      }
-
-      if (!authData.user) {
-        showToast('❌ Login gagal. Periksa email dan password Anda.', 'error');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
-      }
-
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('auth_id', authData.user.id)
-        .single();
-
-      if (userError) {
-        showToast('❌ Data user tidak ditemukan.', 'error');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
-      }
-
-      const selectedRole = document.querySelector('#roleSelector .role-option.active')?.dataset.role || 'customer';
-      
-      if (userData.role !== selectedRole) {
-        if (roleWarningText) {
-          roleWarningText.textContent = `Akun ini terdaftar sebagai "${ROLE_LABELS[userData.role] || userData.role}", bukan "${ROLE_LABELS[selectedRole] || selectedRole}". Silakan pilih role yang sesuai.`;
-        }
-        if (roleWarning) roleWarning.style.display = 'block';
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        showToast(`❌ Role tidak sesuai! Akun ini adalah ${ROLE_LABELS[userData.role] || userData.role}`, 'error');
-        return;
-      }
-
-      DB.setToken(authData.session.access_token);
-      DB.setUser(userData);
-      DB.setRole(userData.role);
-      
-      updateNavbar();
-      showToast(`✅ ${authData.user.email} Welcome ${userData.name}!`, 'success');
-      
-      const role = userData.role;
-      setTimeout(() => {
-        navigateTo('redirect');
-        const msg = document.getElementById('redirectMessage');
-        
-        if (role === 'customer') {
-          if (msg) msg.textContent = 'Anda akan diarahkan ke Dashboard Customer...';
-          setTimeout(() => {
-            window.location.href = '/customer.html';
-          }, 1500);
-        } else if (role === 'horeka') {
-          if (msg) msg.textContent = 'Anda akan diarahkan ke Dashboard Mitra HOREKA...';
-          setTimeout(() => {
-            window.location.href = '/horeka.html';
-          }, 1500);
-        } else if (role === 'driver') {
-          if (msg) msg.textContent = 'Anda akan diarahkan ke Dashboard Mitra Driver...';
-          setTimeout(() => {
-            window.location.href = '/driver.html';
-          }, 1500);
-        } else {
-          navigateTo('landing');
-        }
-      }, 800);
-
-    } catch (error) {
-      console.error('Login error:', error);
-      showToast(`❌ Connection error: ${error.message}`, 'error');
+    } finally {
       btn.innerHTML = originalText;
       btn.disabled = false;
     }
@@ -2816,12 +2620,15 @@
   // ===== LOGOUT =====
   function handleLogout() {
     pendingLogout = async function() {
-      try {
-        await supabase.auth.signOut();
-      } catch (error) {
-        console.log('Logout Supabase error:', error);
+      const token = DB.getToken();
+      if (token) {
+        try {
+          await fetch(`${API_URL}/logout`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+          });
+        } catch (error) { console.log('Logout API error:', error); }
       }
-      
       DB.logout();
       updateNavbar();
       showToast('👋 Logged out successfully!', 'info');
@@ -2833,33 +2640,8 @@
   // ================================================================
   // ===== SOCIAL LOGIN =====
   // ================================================================
-  async function signInWithGoogle() {
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: window.location.origin + '/index.html'
-        }
-      });
-      if (error) throw error;
-    } catch (error) {
-      showToast('❌ Google login error: ' + error.message, 'error');
-    }
-  }
-
-  async function signInWithFacebook() {
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'facebook',
-        options: {
-          redirectTo: window.location.origin + '/index.html'
-        }
-      });
-      if (error) throw error;
-    } catch (error) {
-      showToast('❌ Facebook login error: ' + error.message, 'error');
-    }
-  }
+  function signInWithGoogle() { window.location.href = `${API_URL}/auth/google/redirect`; }
+  function signInWithFacebook() { window.location.href = `${API_URL}/auth/facebook/redirect`; }
 
   // ================================================================
   // ===== PARALLAX =====
@@ -2890,37 +2672,10 @@
     observer.observe(el);
   });
 
-  // ================================================================
-  // ===== CHECK SUPABASE CONNECTION =====
-  // ================================================================
-  async function checkSupabaseConnection() {
-    try {
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Connection timeout')), 5000)
-      );
-      
-      const queryPromise = supabase.from('users').select('count').limit(1);
-      const result = await Promise.race([queryPromise, timeoutPromise]);
-      
-      if (result.error) throw result.error;
-      console.log('✅ Supabase connected successfully!');
-      return true;
-    } catch (error) {
-      console.warn('⚠️ Supabase connection warning:', error.message);
-      return false;
-    }
-  }
-
-  // ================================================================
-  // ===== INIT =====
-  // ================================================================
   console.log('🔥 PANTAS App is ready!');
-  console.log('📌 Supabase URL:', SUPABASE_URL);
+  console.log('📌 API URL:', API_URL);
   console.log('📌 Role-based redirect: Customer → customer.html, HOREKA → horeka.html, Driver → driver.html');
-
-  setTimeout(() => {
-    checkSupabaseConnection().catch(() => {});
-  }, 3000);
+  console.log('📌 Role validation: Setiap login akan divalidasi apakah role yang dipilih sesuai dengan role akun');
 </script>
 
 </body>
