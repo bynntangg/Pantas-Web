@@ -56,24 +56,22 @@
             gap: 14px;
         }
         .logo-img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: #1f8a5b; /* Hijau seperti contoh */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
-.logo-img img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-    transform: translateY(3px);
-    
-}
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #1f8a5b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        .logo-img img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            transform: translateY(3px);
+        }
         .logo-text h1 {
             font-size: 28px;
             font-weight: 800;
@@ -464,34 +462,121 @@
         .hidden { display: none !important; }
         .hide-content { display: none !important; }
 
-        /* ===== MODAL ===== */
+        /* ===== MODAL KEBJAKAN PRIVASI - DIPERBAIKI ===== */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 99999;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: modalFadeIn 0.4s ease;
+        }
+        .modal-overlay.hidden-modal {
+            display: none !important;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-container {
+            max-width: 580px;
+            width: 100%;
+            max-height: 92vh;
+            background: white;
+            border-radius: 32px;
+            overflow-y: auto;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .modal-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-container::-webkit-scrollbar-thumb {
+            background: #2d9b6e;
+            border-radius: 10px;
+        }
+        .modal-header {
+            padding: 28px 30px 16px;
+            border-bottom: 1px solid #e2ede8;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-radius: 32px 32px 0 0;
+        }
+        .modal-header h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0d2f23;
+        }
+        .modal-header .modal-sub {
+            font-size: 13px;
+            color: #5a8f7a;
+            margin-top: 4px;
+        }
+        .modal-header .modal-icon-wrap {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2d9b6e, #1a7a55);
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .modal-overlay.hidden-modal { display: none !important; }
-        .modal-container {
-            max-width: 560px;
-            width: 94%;
-            background: white;
-            border-radius: 36px;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 0 0 24px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.2);
-        }
-        .modal-header {
-            padding: 24px 28px 12px;
-            border-bottom: 1px solid #e2ede8;
+            margin-bottom: 12px;
+            font-size: 28px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(45, 155, 110, 0.25);
         }
         .modal-body {
-            padding: 20px 28px;
+            padding: 24px 30px 30px;
+        }
+        .modal-body .policy-section {
+            margin-bottom: 16px;
+        }
+        .modal-body .policy-section h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0d2f23;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-body .policy-section h3 i {
+            color: #2d9b6e;
+        }
+        .modal-body .policy-section .policy-box {
+            background: #f8fcfb;
+            border-radius: 16px;
+            padding: 14px 16px;
+            border: 1px solid #e2ede8;
+        }
+        .modal-body .policy-section .policy-box .policy-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 13px;
+            color: #334155;
+            border-bottom: 1px solid #f0f5f2;
+        }
+        .modal-body .policy-section .policy-box .policy-item:last-child {
+            border-bottom: none;
+        }
+        .modal-body .policy-section .policy-box .policy-item i {
+            color: #2d9b6e;
+            margin-top: 3px;
+            width: 18px;
+            flex-shrink: 0;
         }
         .checkbox-item {
             display: flex;
@@ -502,9 +587,11 @@
             border-radius: 18px;
             margin-bottom: 10px;
             transition: 0.15s;
+            border: 1px solid #e2ede8;
         }
         .checkbox-item:hover {
             background: #f0f8f4;
+            border-color: #c8e6d9;
         }
         .checkbox-item input {
             width: 20px;
@@ -512,6 +599,19 @@
             margin-top: 2px;
             accent-color: #2d9b6e;
             cursor: pointer;
+            flex-shrink: 0;
+        }
+        .checkbox-item label {
+            font-size: 13px;
+            color: #1a4d3a;
+            cursor: pointer;
+        }
+        .checkbox-item label small {
+            display: block;
+            font-weight: 400;
+            color: #5a8f7a;
+            font-size: 11px;
+            margin-top: 2px;
         }
         .btn-agree {
             width: 100%;
@@ -525,15 +625,27 @@
             cursor: pointer;
             transition: 0.2s;
             margin-top: 10px;
+            box-shadow: 0 4px 16px rgba(45, 155, 110, 0.2);
+        }
+        .btn-agree:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(45, 155, 110, 0.3);
         }
         .btn-agree:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            box-shadow: none;
         }
         .btn-reset {
             background: #f0f5f2;
             color: #5a8f7a;
             margin-top: 8px;
+            box-shadow: none;
+        }
+        .btn-reset:hover:not(:disabled) {
+            background: #e8f5ed;
+            transform: translateY(-2px);
+            box-shadow: none;
         }
         .toast-message {
             position: fixed;
@@ -807,13 +919,17 @@
             .esg-ring { width: 64px; height: 64px; }
             .esg-ring-inner { width: 48px; height: 48px; font-size: 13px; }
             .profile-avatar-btn { width: 38px; height: 38px; font-size: 14px; }
+            .modal-container { width: 98%; margin: 10px; }
+            .modal-header { padding: 20px 18px 12px; }
+            .modal-body { padding: 16px 18px 20px; }
         }
         @media (max-width: 480px) {
             .stats-row { grid-template-columns: 1fr; }
             .quick-actions { grid-template-columns: 1fr 1fr; }
-            .modal-container { width: 98%; }
+            .modal-container { width: 100%; border-radius: 24px 24px 0 0; }
             .app-container { padding: 0 10px 16px; }
             .profile-card { padding: 20px; }
+            .modal-header h2 { font-size: 20px; }
         }
     </style>
 </head>
@@ -822,9 +938,9 @@
     <!-- HEADER -->
     <div class="header">
         <div class="logo-area">
-          <div class="logo-img">
-    <img src="http://127.0.0.1:8000/images/logo-putih.png" alt="Logo PANTAS">
-</div>
+            <div class="logo-img">
+                <img src="http://127.0.0.1:8000/images/logo-putih.png" alt="Logo PANTAS">
+            </div>
             <div class="logo-text"><h1>PANTAS</h1><p><i class="fas fa-chart-line"></i> Mitra HOREKA • ESG</p></div>
         </div>
         <div class="header-right">
@@ -1068,30 +1184,133 @@
     </div>
 </div>
 
+<!-- ============================================================ -->
+<!-- ===== MODAL KEBJAKAN PRIVASI - DIPERBAIKI ===== -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="policyModal">
+    <div class="modal-container">
+        <div class="modal-header">
+            <div class="modal-icon-wrap"><i class="fas fa-handshake"></i></div>
+            <h2>Perjanjian Mitra HOREKA</h2>
+            <div class="modal-sub">Baca dan setujui kebijakan sebelum memulai</div>
+        </div>
+        <div class="modal-body">
+            <!-- Kebijakan Privasi -->
+            <div class="policy-section">
+                <h3><i class="fas fa-shield-alt"></i> Kebijakan Privasi & Keamanan Data</h3>
+                <div class="policy-box">
+                    <div class="policy-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span><strong>Lokasi Real-time:</strong> Diakses hanya saat status "Online" dan digunakan untuk optimasi rute pengiriman</span>
+                    </div>
+                    <div class="policy-item">
+                        <i class="fas fa-database"></i>
+                        <span><strong>Perlindungan Data:</strong> Nama, nomor telepon, dan riwayat transaksi dienkripsi dengan standar industri</span>
+                    </div>
+                    <div class="policy-item">
+                        <i class="fas fa-clock"></i>
+                        <span><strong>Retensi Data:</strong> Riwayat order dan aktivitas disimpan maksimal 3 bulan untuk keperluan audit</span>
+                    </div>
+                    <div class="policy-item">
+                        <i class="fas fa-share-alt"></i>
+                        <span><strong>Berbagi Data:</strong> Data hanya dibagikan dengan merchant/penerima untuk keperluan pengiriman</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standar Makanan -->
+            <div class="policy-section">
+                <h3><i class="fas fa-utensils"></i> Standar Keamanan Pangan</h3>
+                <div class="policy-box">
+                    <div class="policy-item">
+                        <i class="fas fa-temperature-high"></i>
+                        <span><strong>Suhu Penyimpanan:</strong> Makanan panas ≥60°C, makanan dingin ≤5°C</span>
+                    </div>
+                    <div class="policy-item">
+                        <i class="fas fa-clock"></i>
+                        <span><strong>Durasi Maksimal:</strong> Makanan siap saji maksimal 4 jam setelah dimasak</span>
+                    </div>
+                    <div class="policy-item">
+                        <i class="fas fa-box"></i>
+                        <span><strong>Kemasan:</strong> Wajib menggunakan kemasan food-grade yang aman</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Komitmen Zero Waste -->
+            <div class="policy-section">
+                <h3><i class="fas fa-leaf"></i> Komitmen Zero Waste</h3>
+                <div class="policy-box">
+                    <div class="policy-item">
+                        <i class="fas fa-bullseye"></i>
+                        <span><strong>Target:</strong> Pengurangan limbah makanan minimal 20% dalam 6 bulan pertama</span>
+                    </div>
+                    <div class="policy-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span><strong>Pelaporan:</strong> Laporan progress zero waste setiap bulan melalui dashboard</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Persetujuan -->
+            <div style="margin-top:16px;">
+                <h3 style="font-size:15px; font-weight:700; color:#0d2f23; margin-bottom:10px;"><i class="fas fa-check-circle" style="color:#2d9b6e;"></i> Persetujuan</h3>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check1">
+                    <label>
+                        <strong>Standar Keamanan Pangan</strong>
+                        <small>Saya mematuhi standar HACCP dasar dalam penyimpanan dan pengolahan makanan</small>
+                    </label>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check2">
+                    <label>
+                        <strong>Komitmen Zero Waste</strong>
+                        <small>Saya berkomitmen untuk mengurangi limbah makanan dan memprioritaskan daur ulang</small>
+                    </label>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check3">
+                    <label>
+                        <strong>Data untuk Analitik AI</strong>
+                        <small>Saya menyetujui data transaksi dan limbah digunakan untuk analitik AI (data dianonimkan)</small>
+                    </label>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check4">
+                    <label>
+                        <strong>Sanksi Pelanggaran</strong>
+                        <small>Saya memahami sanksi: Peringatan → Penangguhan → Penghapusan akun</small>
+                    </label>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check5">
+                    <label>
+                        <strong>Pelatihan Keamanan Pangan</strong>
+                        <small>Saya bersedia mengikuti pelatihan online gratis setiap 3 bulan</small>
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn-agree" id="agreeBtn" disabled>
+                <i class="fas fa-check-circle"></i> Setujui & Mulai Bertugas
+            </button>
+            <button class="btn-agree btn-reset" id="resetBtn">
+                <i class="fas fa-trash-alt"></i> Reset Persetujuan
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- LIGHTBOX -->
 <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
     <span class="close-lightbox" style="position:absolute; top:20px; right:30px; color:white; font-size:40px; cursor:pointer;">&times;</span>
     <img id="lightboxImage" src="" alt="Foto">
-</div>
-
-<!-- MODAL -->
-<div class="modal-overlay" id="policyModal">
-    <div class="modal-container">
-        <div class="modal-header"><h2><i class="fas fa-handshake"></i> Perjanjian Mitra HOREKA</h2><p style="font-size:13px; color:#8ab0a0;">✅ Baca dan setujui kebijakan</p></div>
-        <div class="modal-body">
-            <div style="margin-bottom:16px;"><h3 style="font-size:16px;"><i class="fas fa-utensils"></i> Standar Makanan</h3><div style="background:#f8fcfb; border-radius:16px; padding:12px;"><div style="display:flex; gap:12px; flex-wrap:wrap;"><span><i class="fas fa-temperature-high"></i> Suhu: 60°C panas / 5°C dingin</span><span><i class="fas fa-clock"></i> Maks 4 jam</span><span><i class="fas fa-box"></i> Kemasan food-grade</span></div></div></div>
-            <div style="margin-bottom:16px;"><h3 style="font-size:16px;"><i class="fas fa-leaf"></i> Komitmen Zero Waste</h3><p style="font-size:13px;">Target pengurangan limbah min. 20% dalam 6 bulan.</p></div>
-            <div><h3 style="font-size:16px;"><i class="fas fa-check-circle"></i> Persetujuan</h3>
-                <div class="checkbox-item"><input type="checkbox" id="check1"><label><strong>Standar spesifikasi</strong><br><small>Mematuhi HACCP dasar</small></label></div>
-                <div class="checkbox-item"><input type="checkbox" id="check2"><label><strong>Komitmen zero waste</strong><br><small>Prioritas utama</small></label></div>
-                <div class="checkbox-item"><input type="checkbox" id="check3"><label><strong>Data untuk analitik AI</strong><br><small>Data dianonimkan</small></label></div>
-                <div class="checkbox-item"><input type="checkbox" id="check4"><label><strong>Sanksi pelanggaran</strong><br><small>Peringatan → penangguhan → hapus</small></label></div>
-                <div class="checkbox-item"><input type="checkbox" id="check5"><label><strong>Pelatihan keamanan pangan</strong><br><small>Online gratis tiap 3 bulan</small></label></div>
-            </div>
-            <button class="btn-agree" id="agreeBtn" disabled><i class="fas fa-check-circle"></i> Setuju & Mulai</button>
-            <button class="btn-agree btn-reset" id="resetBtn"><i class="fas fa-trash-alt"></i> Reset</button>
-        </div>
-    </div>
 </div>
 
 <script>
@@ -1172,7 +1391,6 @@
         document.getElementById('ratingStarsBig').innerHTML=renderStars(stats.avg,'16px');
         document.getElementById('totalReviewsCount').innerText=stats.total;
         document.getElementById('totalReviewsFull').innerText=stats.total;
-        // update profile rating
         document.getElementById('profileRating').innerText = `${stats.avg.toFixed(1)} (${stats.total} ulasan)`;
     }
 
@@ -1244,7 +1462,6 @@
         const trees = Math.floor(totalWaste * 0.05);
         updateESGVisuals(totalWaste, co2, trees);
 
-        // Update profile
         document.getElementById('profileWasteSaved').innerText = totalWaste + ' kg';
 
         const container=document.getElementById('activeSurplusList');
@@ -1334,7 +1551,13 @@
         alert(`📄 Laporan ESG PANTAS\n━━━━━━━━━━━━━━━━━━\n⭐ Rating: ${stats.avg.toFixed(1)} (${stats.total} ulasan)\n✅ Limbah Terselamatkan: ${totalWaste} kg\n🌱 CO₂eq Tereduksi: ${co2} kg\n🌳 Setara Menanam ${trees} pohon\n💚 Pendapatan: ${document.getElementById('revenue').innerText}`);
     }
 
-    function showToast(msg){ const t=document.createElement('div'); t.className='toast-message'; t.innerHTML=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
+    function showToast(msg){ 
+        const t=document.createElement('div'); 
+        t.className='toast-message'; 
+        t.innerHTML=msg; 
+        document.body.appendChild(t); 
+        setTimeout(()=>t.remove(),3000); 
+    }
 
     function showTab(id){
         ['dashboard','upload','waste','prediction','reviews','profile'].forEach(t=>{ const el=document.getElementById(t+'Tab'); if(el)el.classList.add('hidden'); });
@@ -1345,7 +1568,6 @@
         if(id==='dashboard')updateDashboard();
         if(id==='reviews')renderAllReviews();
         if(id==='profile')updateProfileUI();
-        // scroll to top
         window.scrollTo({top:0,behavior:'smooth'});
     }
 
@@ -1365,16 +1587,48 @@
     // ===== LOGOUT =====
     function logout(){
         if(confirm('Apakah Anda yakin ingin logout?')){
-            // Redirect ke index.html
-            window.location.href = 'index.html';
+            // Redirect ke index.html dengan parameter logout
+            window.location.href = 'index.html?logout=true';
         }
     }
 
-    // ========== MODAL ==========
-    function checkAllCheckboxes(){ let all=true; for(let i=1;i<=5;i++){ const cb=document.getElementById('check'+i); if(cb&&!cb.checked)all=false; } document.getElementById('agreeBtn').disabled=!all; }
-    function setupCheckboxListeners(){ for(let i=1;i<=5;i++){ const cb=document.getElementById('check'+i); if(cb)cb.addEventListener('change',checkAllCheckboxes); } }
-    function acceptAgreement(){ localStorage.setItem('pantasAgreementAccepted','true'); localStorage.setItem('pantasName','Warung MbaK Harum'); document.getElementById('policyModal').classList.add('hidden-modal'); document.getElementById('mainContent').classList.remove('hide-content'); initDashboard(); showToast('✅ Selamat bergabung!'); }
-    function resetAndShowModal(){ localStorage.removeItem('pantasAgreementAccepted'); localStorage.removeItem('pantasName'); document.getElementById('policyModal').classList.remove('hidden-modal'); document.getElementById('mainContent').classList.add('hide-content'); for(let i=1;i<=5;i++){ const cb=document.getElementById('check'+i); if(cb)cb.checked=false; } document.getElementById('agreeBtn').disabled=true; }
+    // ========== MODAL KEBJAKAN PRIVASI ==========
+    function checkAllCheckboxes(){ 
+        let all=true; 
+        for(let i=1;i<=5;i++){ 
+            const cb=document.getElementById('check'+i); 
+            if(cb&&!cb.checked) all=false; 
+        } 
+        document.getElementById('agreeBtn').disabled=!all; 
+    }
+
+    function setupCheckboxListeners(){ 
+        for(let i=1;i<=5;i++){ 
+            const cb=document.getElementById('check'+i); 
+            if(cb) cb.addEventListener('change', checkAllCheckboxes); 
+        } 
+    }
+
+    function acceptAgreement(){ 
+        localStorage.setItem('pantasAgreementAccepted','true'); 
+        localStorage.setItem('pantasName','Warung MbaK Harum'); 
+        document.getElementById('policyModal').classList.add('hidden-modal'); 
+        document.getElementById('mainContent').classList.remove('hide-content'); 
+        initDashboard(); 
+        showToast('✅ Selamat bergabung sebagai Mitra HOREKA!'); 
+    }
+
+    function resetAndShowModal(){ 
+        localStorage.removeItem('pantasAgreementAccepted'); 
+        localStorage.removeItem('pantasName'); 
+        document.getElementById('policyModal').classList.remove('hidden-modal'); 
+        document.getElementById('mainContent').classList.add('hide-content'); 
+        for(let i=1;i<=5;i++){ 
+            const cb=document.getElementById('check'+i); 
+            if(cb) cb.checked=false; 
+        } 
+        document.getElementById('agreeBtn').disabled=true; 
+    }
 
     function loadData(){
         const w=localStorage.getItem('pantasWaste'), s=localStorage.getItem('pantasSurplus'), r=localStorage.getItem('pantasRevenue'), rv=localStorage.getItem('pantasReviews');
@@ -1385,18 +1639,49 @@
         localStorage.setItem('pantasReviews',JSON.stringify(reviews));
     }
 
-    function initDashboard(){ initCharts(); setupFilters(); updateDashboard(); renderWasteHistory(); renderPrediction(); renderAllReviews(); showTab('dashboard'); document.getElementById('ownerName').innerText=localStorage.getItem('pantasName')||'Warung MbaK Harum'; updateProfileUI(); }
+    function initDashboard(){ 
+        initCharts(); 
+        setupFilters(); 
+        updateDashboard(); 
+        renderWasteHistory(); 
+        renderPrediction(); 
+        renderAllReviews(); 
+        showTab('dashboard'); 
+        document.getElementById('ownerName').innerText=localStorage.getItem('pantasName')||'Warung MbaK Harum'; 
+        updateProfileUI(); 
+    }
 
     // ========== START ==========
     (function(){
         setupCheckboxListeners();
         document.getElementById('agreeBtn').onclick=acceptAgreement;
         document.getElementById('resetBtn').onclick=resetAndShowModal;
-        document.querySelectorAll('.nav-item').forEach(btn=>{ btn.addEventListener('click',()=>{ if(btn.dataset.tab)showTab(btn.dataset.tab); }); });
+        
+        document.querySelectorAll('.nav-item').forEach(btn=>{ 
+            btn.addEventListener('click',()=>{ 
+                if(btn.dataset.tab) showTab(btn.dataset.tab); 
+            }); 
+        });
+        
         loadData();
-        if(localStorage.getItem('pantasAgreementAccepted')==='true'){ document.getElementById('policyModal').classList.add('hidden-modal'); document.getElementById('mainContent').classList.remove('hide-content'); initDashboard(); }
-        else{ document.getElementById('policyModal').classList.remove('hidden-modal'); document.getElementById('mainContent').classList.add('hide-content'); }
-        document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeLightbox(); });
+        
+        // Cek apakah sudah menyetujui kebijakan
+        // HAPUS localStorage untuk testing - comment out jika sudah production
+        // localStorage.removeItem('pantasAgreementAccepted');
+        
+        if(localStorage.getItem('pantasAgreementAccepted')==='true'){ 
+            // Sudah setuju - langsung tampilkan dashboard
+            document.getElementById('policyModal').classList.add('hidden-modal'); 
+            document.getElementById('mainContent').classList.remove('hide-content'); 
+            initDashboard(); 
+        } else { 
+            // Belum setuju - tampilkan modal
+            document.getElementById('policyModal').classList.remove('hidden-modal'); 
+            document.getElementById('mainContent').classList.add('hide-content'); 
+        }
+        
+        document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeLightbox(); });
+        
         // Set profile avatar initial
         const name = localStorage.getItem('pantasName') || 'Warung MbaK Harum';
         document.getElementById('profileAvatarBtn').innerText = getInitials(name);
