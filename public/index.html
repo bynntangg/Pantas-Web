@@ -544,7 +544,7 @@
     /* ===== ROLE SELECTOR ===== */
     .role-selector {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 10px;
       margin-bottom: 20px;
     }
@@ -1465,6 +1465,24 @@
       text-decoration: underline;
     }
 
+    /* ===== ROLE WARNING ===== */
+    #roleWarning {
+      display: none;
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: #dc2626;
+      animation: shakeWarning 0.5s ease;
+    }
+    @keyframes shakeWarning {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+
     /* ============================================================ */
     /* ===== RESPONSIVE ===== */
     /* ============================================================ */
@@ -2263,10 +2281,31 @@
       localStorage.removeItem('pantas_token');
       localStorage.removeItem('pantas_user');
       localStorage.removeItem('pantas_role');
+      // Hapus juga sessionStorage untuk keamanan
+      try { sessionStorage.clear(); } catch(e) {}
       updateNavbar();
     },
     isLoggedIn: function() { return !!this.getToken(); }
   };
+
+  // ================================================================
+  // ===== DETEKSI APAKAH USER SEDANG DI HALAMAN LOGOUT =====
+  // ================================================================
+  function checkAndLogoutIfNeeded() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const logoutParam = urlParams.get('logout');
+    if (logoutParam === 'true') {
+      // Hapus parameter dari URL tanpa reload
+      if (window.history && window.history.replaceState) {
+        const newUrl = window.location.pathname + window.location.search.replace(/[?&]logout=true/, '').replace(/^&/, '?');
+        window.history.replaceState({}, document.title, newUrl);
+      }
+      // Jika token masih ada, lakukan logout
+      if (DB.isLoggedIn()) {
+        handleLogout();
+      }
+    }
+  }
 
   // ================================================================
   // ===== VARIABLES =====
@@ -2410,6 +2449,8 @@
         main.classList.add('visible');
         splash.style.display = 'none';
         updateNavbar();
+        // Cek apakah ada parameter logout
+        checkAndLogoutIfNeeded();
         setTimeout(initCharts, 500);
         document.querySelectorAll('.pct').forEach(el => {
           const text = el.textContent;
@@ -2632,7 +2673,12 @@
       DB.logout();
       updateNavbar();
       showToast('👋 Logged out successfully!', 'info');
+      
+      // Navigasi ke landing page
       navigateTo('landing');
+      
+      // Pastikan semua state sudah bersih
+      document.querySelectorAll('.user-profile').forEach(el => el.classList.remove('show'));
     };
     showModal();
   }
@@ -2672,10 +2718,24 @@
     observer.observe(el);
   });
 
+  // ================================================================
+  // ===== LISTENER UNTUK DETECT LOGOUT DARI HALAMAN LAIN =====
+  // ================================================================
+  // Cek setiap kali halaman di-load
+  window.addEventListener('load', function() {
+    checkAndLogoutIfNeeded();
+  });
+
+  // Cek setiap kali ada perubahan URL (untuk SPA)
+  window.addEventListener('popstate', function() {
+    checkAndLogoutIfNeeded();
+  });
+
   console.log('🔥 PANTAS App is ready!');
   console.log('📌 API URL:', API_URL);
   console.log('📌 Role-based redirect: Customer → customer.html, HOREKA → horeka.html, Driver → driver.html');
   console.log('📌 Role validation: Setiap login akan divalidasi apakah role yang dipilih sesuai dengan role akun');
+  console.log('📌 Logout: Akan membersihkan semua session dan redirect ke landing page');
 </script>
 
 </body>
